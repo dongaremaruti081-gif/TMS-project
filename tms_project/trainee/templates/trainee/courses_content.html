@@ -1,0 +1,245 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+
+<style>
+.container{
+    display:grid;
+    grid-template-columns: 2fr 1fr;
+    gap:20px;
+}
+
+/* LEFT SIDE */
+.module-card{
+    background:#fff;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+    margin-bottom:20px;
+    overflow:hidden;
+}
+
+.module-header{
+    background:linear-gradient(90deg,#eef2ff,#e0e7ff);
+    padding:12px 15px;
+    font-weight:600;
+}
+
+.lesson{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 15px;
+    border-top:1px solid #eee;
+    align-items:center;
+}
+
+.lesson-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.icon{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+}
+
+.done{ background:#dcfce7; color:#16a34a; }
+.play{ background:#ede9fe; color:#7c3aed; }
+.doc{ background:#dbeafe; color:#2563eb; }
+.lock{ background:#f3f4f6; color:#9ca3af; }
+
+.locked{
+    opacity:0.5;
+}
+
+/* RIGHT SIDE */
+.sidebar{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.progress-card{
+    background:#fff;
+    padding:20px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+}
+
+.progress-bar{
+    height:6px;
+    background:#eee;
+    border-radius:10px;
+    margin:10px 0;
+}
+
+.progress-bar div{
+    height:6px;
+    background:#7c3aed;
+    border-radius:10px;
+}
+
+.keep-card{
+    padding:20px;
+    border-radius:12px;
+    background:linear-gradient(90deg,#7c3aed,#6366f1);
+    color:white;
+}
+
+.keep-card button{
+    width:100%;
+    margin-top:10px;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:white;
+    color:#7c3aed;
+    font-weight:600;
+}
+
+small{
+    color:#6b7280;
+}
+</style>
+
+<h2>Course Content</h2>
+<p style="color:#6b7280;">Advanced React Patterns - by Sarah Johnson</p>
+
+<div class="container">
+
+<!-- LEFT -->
+<div>
+
+    <!-- MODULE 1 -->
+    <div class="module-card">
+        <div class="module-header">Module 1: Introduction to React</div>
+
+        <div class="lesson">
+            <div class="lesson-left">
+                <div class="icon done">✔</div>
+                <div>
+                    <div>What is React?</div>
+                    <small>12:30</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="lesson">
+            <div class="lesson-left">
+                <div class="icon done">✔</div>
+                <div>
+                    <div>Setting up the Environment</div>
+                    <small>18:45</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="lesson">
+            <div class="lesson-left">
+                <div class="icon play">▶</div>
+                <div>
+                    <div>Your First Component</div>
+                    <small>22:15</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULE 2 -->
+    <div class="module-card">
+        <div class="module-header">Module 2: Components & Props</div>
+
+        <div class="lesson">
+            <div class="lesson-left">
+                <div class="icon play">▶</div>
+                <div>
+                    <div>Understanding Components</div>
+                    <small>15:20</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="lesson">
+            <div class="lesson-left">
+                <div class="icon doc">📄</div>
+                <div>
+                    <div>Props in Detail</div>
+                    <small>8 min read</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="lesson">
+            <div class="lesson-left">
+                <div class="icon doc">📄</div>
+                <div>
+                    <div>Practice Exercise</div>
+                    <small>10 questions</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULE 3 -->
+    <div class="module-card">
+        <div class="module-header">Module 3: State & Lifecycle</div>
+
+        <div class="lesson locked">
+            <div class="lesson-left">
+                <div class="icon lock">🔒</div>
+                <div>
+                    <div>useState Hook</div>
+                    <small>20:30</small>
+                </div>
+            </div>
+            <small>Locked</small>
+        </div>
+
+        <div class="lesson locked">
+            <div class="lesson-left">
+                <div class="icon lock">🔒</div>
+                <div>
+                    <div>useEffect Hook</div>
+                    <small>25:15</small>
+                </div>
+            </div>
+            <small>Locked</small>
+        </div>
+    </div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="sidebar">
+
+    <div class="progress-card">
+        <h4>Course Progress</h4>
+        <small>Overall</small>
+
+        <div class="progress-bar">
+            <div style="width:75%"></div>
+        </div>
+
+        <small>Completed Lessons</small>
+        <div>6 / 8</div>
+
+        <small>Time Spent</small>
+        <div>4.5 hours</div>
+    </div>
+
+    <div class="keep-card">
+        <h4>Keep it up!</h4>
+        <small>You’re making great progress. Complete 2 more lessons to unlock the next module.</small>
+
+        <button>Continue Learning</button>
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

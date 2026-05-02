@@ -1,0 +1,247 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+
+<div class="manage-admins-section">
+
+    <!-- Top Heading -->
+    <div class="page-top">
+        <div>
+            <h1>Employee Management</h1>
+        </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="search-filter-box">
+
+        <form method="POST" action="{% url 'add_employee' %}">
+            {% csrf_token %}
+
+            <div class="form-column">
+
+                <!-- NAME -->
+                <input type="text" name="full_name"
+                       placeholder="Full Name"
+                       pattern="[A-Za-z ]+"
+                       required>
+
+                <!-- USERNAME -->
+                <input type="text" name="username"
+                       placeholder="Username"
+                       pattern="[A-Za-z]+"
+                       required>
+
+                <!-- EMAIL -->
+                <input type="email" name="email" placeholder="Email">
+
+                <!-- PHONE -->
+                <input type="text" name="phone"
+                       id="phoneInput"
+                       placeholder="Phone"
+                       maxlength="10"
+                       required>
+
+                <!-- ROLE -->
+                <select name="role">
+                    <option value="Trainer">Trainer</option>
+                    <option value="Trainee">Trainee</option>
+                </select>
+
+                <!-- PASSWORD -->
+                <div class="password-box">
+                    <input type="password" name="password"
+                           id="passwordInput"
+                           placeholder="Password"
+                           required>
+
+                    <span id="togglePassword">👁️</span>
+                </div>
+
+                <button type="submit" class="add-btn">➕ Add</button>
+
+            </div>
+        </form>
+
+    </div>
+
+    <!-- TABLE SAME -->
+    <div class="table-box">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for emp in employees %}
+                <tr>
+                    <td>{{ emp.full_name }}</td>
+                    <td>{{ emp.username }}</td>
+                    <td>{{ emp.email }}</td>
+                    <td>{{ emp.phone }}</td>
+                    <td>
+                        <span class="role-badge">{{ emp.role }}</span>
+                    </td>
+                    <td>
+                        <a href="{% url 'delete_employee' emp.id %}"
+                           class="delete-btn"
+                           onclick="return confirm('Are you sure?')">
+                           Delete
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align:center; padding:30px;">
+                        No employees found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<style>
+.manage-admins-section{
+    padding:30px;
+    background:#f5f7fb;
+    font-family:Arial,sans-serif;
+}
+
+.page-top{
+    margin-bottom:25px;
+}
+
+.page-top h1{
+    font-size:36px;
+    color:#1f2937;
+}
+
+.search-filter-box{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:25px;
+}
+
+/* ✅ COLUMN LAYOUT */
+.form-column{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+/* INPUT STYLE SAME */
+.search-filter-box input,
+.search-filter-box select{
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#f3f4f6;
+    font-size:14px;
+    width:100%;
+}
+
+/* PASSWORD */
+.password-box{
+    position:relative;
+}
+
+.password-box span{
+    position:absolute;
+    right:10px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+}
+
+/* BUTTON */
+.add-btn{
+    background:#5b5cf0;
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+}
+.add-btn:hover{
+    background:#4338ca;
+}
+
+/* TABLE SAME */
+.table-box{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    overflow:hidden;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:18px;
+    border-bottom:1px solid #e5e7eb;
+}
+
+th{
+    background:#f9fafb;
+    color:#64748b;
+}
+
+.role-badge{
+    background:#dbeafe;
+    color:#1d4ed8;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.delete-btn{
+    background:#ef4444;
+    color:white;
+    padding:6px 12px;
+    border-radius:8px;
+    text-decoration:none;
+}
+</style>
+
+<!-- JS -->
+<script>
+
+/* PHONE VALIDATION */
+const phoneInput = document.getElementById("phoneInput");
+
+phoneInput.addEventListener("input", function(){
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if(this.value.length > 10){
+        this.value = this.value.slice(0,10);
+    }
+});
+
+/* PASSWORD TOGGLE */
+const passwordInput = document.getElementById("passwordInput");
+const togglePassword = document.getElementById("togglePassword");
+
+togglePassword.addEventListener("click", function(){
+    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+});
+
+/* REMOVE SPACE */
+passwordInput.addEventListener("input", function(){
+    this.value = this.value.replace(/\s/g, '');
+});
+
+</script>
+
+{% endblock %}

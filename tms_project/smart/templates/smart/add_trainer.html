@@ -1,0 +1,88 @@
+{% extends "base_dashboard.html" %}
+{% block content %}
+
+<style>
+.form-box{
+    max-width:500px;
+    margin:auto;
+    background:#fff;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-box h2{
+    margin-bottom:20px;
+}
+
+.input-group{
+    margin-bottom:15px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:500;
+}
+
+.input-group input,
+.input-group select{
+    width:100%;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.submit-btn{
+    background:#2563eb;
+    color:#fff;
+    padding:10px;
+    width:100%;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+}
+</style>
+
+<div class="form-box">
+    <h2>Add Trainer</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" name="full_name" required>
+        </div>
+
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" name="username" required>
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" name="password" required>
+        </div>
+
+        <!-- OPTIONAL FIELD -->
+        <div class="input-group">
+            <label>Specialty</label>
+            <select name="specialty">
+                <option value="Technical">Technical</option>
+                <option value="Leadership">Leadership</option>
+                <option value="Sales">Sales</option>
+                <option value="Soft Skills">Soft Skills</option>
+            </select>
+        </div>
+
+        <button type="submit" class="submit-btn">Create Trainer</button>
+    </form>
+</div>
+
+{% endblock %}

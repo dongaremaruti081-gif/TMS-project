@@ -1,0 +1,55 @@
+{% extends "base_dashboard.html" %}
+{% block content %}
+
+<style>
+.card{
+    max-width:400px;
+    margin:auto;
+    background:#fff;
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.btn-group{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+}
+
+.delete-btn{
+    flex:1;
+    background:#ef4444;
+    color:white;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+}
+
+.cancel-btn{
+    flex:1;
+    padding:10px;
+    background:#f3f4f6;
+    border-radius:10px;
+    text-decoration:none;
+}
+</style>
+
+<div class="card">
+
+    <h3>Delete Trainee</h3>
+    <p>Are you sure you want to delete <b>{{ trainee.full_name }}</b>?</p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="btn-group">
+            <button class="delete-btn">Yes, Delete</button>
+            <a href="{% url 'manage_trainees' %}" class="cancel-btn">Cancel</a>
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

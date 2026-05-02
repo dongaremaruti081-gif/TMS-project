@@ -1,0 +1,142 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+
+<style>
+.course-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.course-card{
+    background:#fff;
+    border-radius:16px;
+    overflow:hidden;
+    border:1px solid #e5e7eb;
+    transition:0.3s;
+}
+
+.course-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 20px rgba(0,0,0,0.05);
+}
+
+.course-header{
+    height:120px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:30px;
+    position:relative;
+}
+
+.badge{
+    position:absolute;
+    top:10px;
+    right:10px;
+    background:white;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.gradient1{ background:linear-gradient(45deg,#a855f7,#7c3aed); }
+.gradient2{ background:linear-gradient(45deg,#3b82f6,#2563eb); }
+.gradient3{ background:linear-gradient(45deg,#6366f1,#4f46e5); }
+.gradient4{ background:linear-gradient(45deg,#8b5cf6,#7c3aed); }
+.gradient5{ background:linear-gradient(45deg,#ec4899,#db2777); }
+.gradient6{ background:linear-gradient(45deg,#06b6d4,#0891b2); }
+
+.course-body{
+    padding:15px;
+}
+
+.progress-bar{
+    height:6px;
+    background:#eee;
+    border-radius:10px;
+    margin:10px 0;
+}
+
+.progress-bar div{
+    height:6px;
+    background:#6366f1;
+    border-radius:10px;
+}
+
+.course-footer{
+    padding:10px 15px;
+}
+
+.btn{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:#e5e7eb;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn:hover{
+    background:#d1d5db;
+}
+</style>
+
+<!-- 🔥 TOP HEADER -->
+<div style="display:flex; justify-content:space-between;">
+    <div>
+        <h2>My Courses</h2>
+        <p style="color:#6b7280;">
+            Explore and manage your enrolled courses
+        </p>
+    </div>
+
+    <button style="background:#7c3aed;color:white;padding:10px 15px;border:none;border-radius:10px;">
+        Browse Catalog
+    </button>
+</div>
+
+<br>
+
+<!-- 🔥 COURSE GRID -->
+<div class="course-grid">
+
+{% for c in courses %}
+<div class="course-card">
+
+    <!-- HEADER -->
+    <div class="course-header gradient{{ forloop.counter }}">
+        📘
+        <div class="badge">{{ c.progress }}% Complete</div>
+    </div>
+
+    <!-- BODY -->
+    <div class="course-body">
+        <h4>{{ c.title }}</h4>
+        <small>{{ c.instructor }}</small>
+
+        <div class="progress-bar">
+            <div style="width: {{ c.progress }}%"></div>
+        </div>
+
+        <small>⏱ {{ c.duration }}</small>
+        &nbsp;&nbsp;
+        <small>👥 {{ c.students }}</small>
+        &nbsp;&nbsp;
+        <small>⭐ {{ c.rating }}</small>
+    </div>
+
+    <!-- FOOTER -->
+
+
+</div>
+{% empty %}
+<p>No courses available</p>
+{% endfor %}
+
+</div>
+
+{% endblock %}

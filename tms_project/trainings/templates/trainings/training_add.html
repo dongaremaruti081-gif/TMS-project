@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Add Training</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="title" placeholder="Title"><br><br>
+    <textarea name="description" placeholder="Description"></textarea><br><br>
+    <input type="text" name="trainer_name" placeholder="Trainer Name"><br><br>
+    <input type="number" name="duration" placeholder="Duration"><br><br>
+    <input type="date" name="start_date"><br><br>
+    <input type="date" name="end_date"><br><br>
+
+    <button type="submit">Save</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+<div class="sidebar">
+    <div class="logo">
+        <h2>Training System</h2>
+        <p>{{ request.user.role }}</p>
+    </div>
+
+    <div class="menu">
+
+        {% if request.user.role == "SuperAdmin" %}
+            <a href="{% url 'superadmin_dashboard' %}">🏠 Dashboard</a>
+            <a href="#">Manage Admins</a>
+
+        {% elif request.user.role == "Admin" %}
+            <a href="{% url 'admin_dashboard' %}">🏠 Dashboard</a>
+            <a href="#">Manage Trainers</a>
+
+        {% elif request.user.role == "Manager" %}
+            <a href="{% url 'manager_dashboard' %}">🏠 Dashboard</a>
+
+        {% elif request.user.role == "Trainer" %}
+            <a href="{% url 'trainer_dashboard' %}">🏠 Dashboard</a>
+
+        {% elif request.user.role == "Trainee" %}
+            <a href="{% url 'trainee_dashboard' %}">🏠 Dashboard</a>
+
+        {% endif %}
+
+        <a href="#">👤 Profile</a>
+        <a href="#">🔔 Notifications</a>
+    </div>
+</div>

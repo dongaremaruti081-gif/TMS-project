@@ -1,0 +1,125 @@
+{% extends "base_dashboard.html" %}
+{% block content %}
+
+<style>
+.page-container{
+    padding:20px;
+}
+
+.card{
+    max-width:600px;
+    margin:auto;
+    background:#fff;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.card-header{
+    margin-bottom:20px;
+}
+
+.card-header h2{
+    font-size:22px;
+    font-weight:600;
+}
+
+.input-group{
+    margin-bottom:18px;
+}
+
+.input-group label{
+    display:block;
+    font-size:13px;
+    margin-bottom:6px;
+    color:#374151;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+}
+
+.input-group input:focus{
+    border-color:#2563eb;
+    outline:none;
+    box-shadow:0 0 0 2px rgba(37,99,235,0.1);
+}
+
+.btn-group{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.save-btn{
+    flex:1;
+    background:#2563eb;
+    color:#fff;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.cancel-btn{
+    flex:1;
+    text-align:center;
+    padding:12px;
+    border-radius:10px;
+    background:#f3f4f6;
+    text-decoration:none;
+    color:#374151;
+}
+</style>
+
+<div class="page-container">
+
+<div class="card">
+
+    <div class="card-header">
+        <h2>Edit Training Program</h2>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="input-group">
+            <label>Program Name</label>
+            <input type="text" name="title" value="{{ program.title }}" required>
+        </div>
+
+        <div class="input-group">
+            <label>Category</label>
+            <input type="text" name="category" value="{{ program.category }}" required>
+        </div>
+
+        <div class="input-group">
+            <label>Duration</label>
+            <input type="text" name="duration" value="{{ program.duration }}" required>
+        </div>
+
+        <div class="input-group">
+            <label>Start Date</label>
+            <input type="date" name="start_date" value="{{ program.start_date|date:'Y-m-d' }}" required>
+        </div>
+
+        <div class="input-group">
+            <label>Capacity</label>
+            <input type="number" name="capacity" value="{{ program.capacity }}" required>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class="save-btn">💾 Update Program</button>
+            <a href="{% url 'training_programs' %}" class="cancel-btn">Cancel</a>
+        </div>
+
+    </form>
+
+</div>
+
+</div>
+
+{% endblock %}

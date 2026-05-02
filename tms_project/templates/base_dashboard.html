@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+/* 🔥 DEFAULT */
+body{
+    background:#f5f7fb;
+    color:#1f2937;
+}
+
+/* 🔥 DARK MODE */
+body.dark-mode{
+    background:#0f172a;
+    color:#e5e7eb;
+}
+
+/* 🔥 AUTO MODE */
+@media (prefers-color-scheme: dark){
+    body.auto-mode{
+        background:#0f172a;
+        color:#e5e7eb;
+    }
+}
+
+/* SIDEBAR */
+.container{
+    display:flex;
+    height:100vh;
+}
+.sidebar{
+    width:250px;
+    background:#fff;
+    border-right:1px solid #e5e7eb;
+    padding:20px 15px;
+        position:relative;   /* 🔥 ADD THIS */
+
+}
+
+/* DARK SIDEBAR */
+body.dark-mode .sidebar{
+    background:#1e293b;
+    border-color:#334155;
+}
+
+/* HEADER */
+.header{
+    background:white;
+    border-bottom:1px solid #e5e7eb;
+    padding:15px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+/* DARK HEADER */
+body.dark-mode .header{
+    background:#1e293b;
+}
+
+.logo h2{ font-size:22px; font-weight:bold; }
+.logo p{ color:#6b7280; font-size:13px; margin-top:5px; }
+
+.menu{ margin-top:30px; }
+
+.menu a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    color:#374151;
+    padding:12px 15px;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
+.menu a.active{
+    background:#5b5cf0;
+    color:white;
+}
+
+.menu a:hover{
+    background:#eef2ff;
+}
+
+/* 🔥 ACCENT COLORS */
+.blue .menu a.active, .blue .avatar{ background:#3b82f6; }
+.purple .menu a.active, .purple .avatar{ background:#8b5cf6; }
+.cyan .menu a.active, .cyan .avatar{ background:#06b6d4; }
+.green .menu a.active, .green .avatar{ background:#10b981; }
+.orange .menu a.active, .orange .avatar{ background:#f59e0b; }
+.red .menu a.active, .red .avatar{ background:#ef4444; }
+
+/* MAIN */
+.main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+    overflow:hidden;
+}
+
+.search-box input{
+    width:350px;
+    padding:10px 15px;
+    border:none;
+    background:#f3f4f6;
+    border-radius:10px;
+}
+
+/* PROFILE */
+.profile{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    position:relative;
+    cursor:pointer;
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:#6366f1;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+/* DROPDOWN */
+.dropdown{
+    position:absolute;
+    top:55px;
+    right:0;
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    width:160px;
+    display:none;
+    box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+.dropdown a,
+.dropdown button{
+    display:block;
+    width:100%;
+    padding:12px;
+    text-decoration:none;
+    color:#374151;
+    font-size:14px;
+    background:none;
+    border:none;
+    text-align:left;
+    cursor:pointer;
+}
+
+.dropdown a:hover,
+.dropdown button:hover{
+    background:#f9fafb;
+}
+
+.profile.active .dropdown{
+    display:block;
+}
+
+.content{
+    padding:25px;
+    flex:1;
+    overflow-y:auto;
+}
+</style>
+</head>
+
+<!-- 🔥 BODY CLASS MAGIC -->
+<body class="
+{% if global_settings %}
+    {% if global_settings.theme == 'Dark' %}dark-mode{% elif global_settings.theme == 'Auto' %}auto-mode{% endif %}
+    {{ global_settings.accent_color }}
+{% endif %}
+">
+
+<div class="container">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="logo">
+        <h2>Training System</h2>
+        <p>{{ request.user.role }}</p>
+    </div>
+
+<div class="menu">
+
+{% if request.user.role == "SuperAdmin" %}
+    <a href="{% url 'superadmin_dashboard' %}">🏠 Dashboard</a>
+    <a href="{% url 'manage_admins' %}">👤 Manage Admins</a>
+    <a href="{% url 'activity_logs' %}">📄 Activity Logs</a>
+    <a href="{% url 'profile' %}">👤 Profile</a>
+    <a href="{% url 'reports_dashboard' %}">📊 Reports</a>
+
+
+{% elif request.user.role == "Admin" %}
+    <a href="{% url 'admin_dashboard' %}">🏠 Dashboard</a>
+    <a href="{% url 'manage_managers' %}">👨‍💼 Manage Managers</a>
+    <a href="{% url 'manage_trainers' %}">👨‍🏫 Manage Trainers</a>
+    <a href="{% url 'manage_trainees' %}">👨‍🎓 Manage Trainees</a>
+    <a href="{% url 'training_programs' %}">📚 Training Programs</a>
+    <a href="{% url 'admin_reports' %}">📊 Reports</a>
+    <a href="{% url 'profile' %}">👤 Profile</a>
+
+
+{% elif request.user.role == "Manager" %}
+    <a href="{% url 'manager_dashboard' %}">🏠 Dashboard</a>
+    <a href="{% url 'assign_training' %}">📚 Assign Training</a>
+    <a href="{% url 'employee_management' %}">👥 Employee Management</a>
+    <a href="{% url 'attendance' %}">🕒 Attendance</a>
+    <a href="{% url 'reports_analytics' %}">📈 Performance</a>
+    <a href="{% url 'profile' %}">👤 Profile</a>
+
+{% elif request.user.role == "Trainer" %}
+    <a href="{% url 'trainer_dashboard'%}">🏠 Dashboard</a>
+    <a href="{% url 'training_programs' %}">📘 My Trainings</a>
+    <a href="{% url 'upload_material' %}">⬆ Upload Materials</a>
+    <a href="{% url 'attendance' %}">✅ Attendance</a>
+    <a href="{% url 'trainer_progress' %}">📈 Trainee Progress</a>
+    <a href="{% url 'profile' %}">👤 Profile</a>
+
+{% elif request.user.role == "Trainee" %}
+    <a href="{% url 'trainee_dashboard' %}">🏠 Dashboard</a>
+    <a href="{% url 'my_courses' %}">📘 My Courses</a>
+    <a href="{% url 'materials' %}">📂 Study Materials</a>
+    <a href="{% url 'my_progress' %}">📈 My Progress</a>
+    <a href="{% url 'my_certificates' %}">🏅 Certificates</a>
+    <a href="{% url 'profile' %}">👤 Profile</a>
+{% endif %}
+
+</div>
+</div>
+    <div style="position:absolute; bottom:20px; width:210px;">
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button style="
+            width:100%;
+            padding:12px;
+            background:#ef4444;
+            color:white;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+            font-weight:bold;
+        ">
+            🚪 Logout
+        </button>
+    </form>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- HEADER -->
+<div class="header">
+    <div class="search-box">
+        <input type="text" placeholder="Search...">
+    </div>
+
+    <!-- 🔔 NOTIFICATION ICON -->
+    <div style="display:flex; align-items:center; gap:20px;">
+
+    <a href="
+    {% if request.user.role == 'Admin' %}
+        {% url 'admin_notification' %}
+    {% elif request.user.role == 'SuperAdmin' %}
+        {% url 'notifications' %}
+    {% elif request.user.role == 'Manager' %}
+        {% url 'noti' %}
+    {% else %}
+        {% url 'notifications' %}
+    {% endif %}
+    "
+style="position:relative; text-decoration:none; font-size:22px;">
+
+    🔔
+
+    {% if notification_count > 0 %}
+    <span style="
+        position:absolute;
+        top:-8px;
+        right:-10px;
+        background:red;
+        color:white;
+        font-size:12px;
+        padding:3px 7px;
+        border-radius:50%;
+        font-weight:bold;
+    ">
+        {{ notification_count }}
+    </span>
+    {% endif %}
+</a>
+
+        <!-- PROFILE -->
+        <div class="profile" onclick="toggleDropdown()" id="profileMenu">
+            <div class="avatar">
+                {{ request.user.full_name|first }}
+            </div>
+            <div>
+                <strong>{{ request.user.full_name }}</strong><br>
+                <small>{{ request.user.role }}</small>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+<!-- CONTENT -->
+<div class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</div>
+</div>
+
+<script>
+function toggleDropdown(){
+    document.getElementById("profileMenu").classList.toggle("active");
+}
+
+document.addEventListener('click', function(e){
+    let menu = document.getElementById("profileMenu");
+    if(!menu.contains(e.target)){
+        menu.classList.remove("active");
+    }
+});
+</script>
+
+</body>
+</html>

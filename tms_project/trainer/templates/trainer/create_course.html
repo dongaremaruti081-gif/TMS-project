@@ -1,0 +1,101 @@
+{% extends "base_dashboard.html" %}
+{% block content %}
+
+<style>
+/* SAME UI STYLE */
+.page-title{
+    font-size:26px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:5px;
+}
+
+.page-subtitle{
+    font-size:14px;
+    color:#6b7280;
+    margin-bottom:20px;
+}
+
+.card{
+    max-width:600px;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:25px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.06);
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+label{
+    font-size:13px;
+    font-weight:600;
+    color:#374151;
+    display:block;
+    margin-bottom:6px;
+}
+
+input, textarea{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #e5e7eb;
+    font-size:14px;
+    outline:none;
+}
+
+input:focus, textarea:focus{
+    border-color:#4f46e5;
+    box-shadow:0 0 0 3px rgba(79,70,229,0.1);
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(90deg,#4f46e5,#3b82f6);
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    font-size:15px;
+}
+
+button:hover{
+    opacity:0.9;
+}
+</style>
+
+<div>
+
+    <div class="page-title">Create Course</div>
+    <div class="page-subtitle">Add a new training course for learners</div>
+
+    <div class="card">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- COURSE NAME -->
+            <div class="form-group">
+                <label>Course Name</label>
+                <input type="text" name="name" required>
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" rows="4"></textarea>
+            </div>
+
+            <button type="submit">Save Course</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TMS | About</title>
+
+<link rel="stylesheet" href="./css/style.css">
+
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    color: white;
+}
+
+/* Header */
+header {
+    background: rgba(0,0,0,0.7);
+    padding: 15px;
+}
+
+nav ul li a {
+    color: white;
+}
+
+/* Logo */
+.logo-img{
+    height:90px;
+    vertical-align: middle;
+    margin-right:30px;
+}
+
+/* HERO IMAGE */
+.hero {
+    height:300px;
+    background:url("https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1600&q=90") no-repeat center center/cover;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+}
+
+.hero h1{
+    position:relative;
+    z-index:1;
+    font-size:40px;
+}
+
+/* Container */
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+/* Cards */
+.card {
+    background: white;
+    color: black;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 15px;
+}
+
+/* IMAGE SECTION */
+.about-img{
+    text-align:center;
+    margin-top:20px;
+}
+
+.about-img img{
+    width:80%;
+    max-width:600px;
+    border-radius:15px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* List */
+.card ul {
+    list-style: none;
+    padding-left: 0;
+    line-height: 1.8;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<div class="container">
+
+    <h1>
+        <img src="img/logo.png" class="logo-img">
+    </h1>
+
+    <nav><ul>
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li class="current"><a href="{% url 'about' %}">About</a></li>
+    <li><a href="{% url 'features' %}">Features</a></li>
+    <li><a href="{% url 'services' %}">Services</a></li>
+    <li><a href="{% url 'contact' %}">Contact</a></li>
+    <li><a href="{% url 'login' %}">Login</a></li>
+    <li><a href="{% url 'register' %}">Register</a></li>
+</ul>
+    </nav>
+
+</div>
+</header>
+
+<!-- 🔥 HERO -->
+<section class="hero">
+<h1>About TMS</h1>
+</section>
+
+<div class="container">
+
+    <!-- ✅ ABOUT CONTENT -->
+    <div class="card">
+        <h1>About Training Management System</h1>
+
+        <p>
+            Training Management System (TMS) is a smart web-based platform used to manage and organize training activities efficiently.
+        </p>
+
+        <!-- 🔥 IMAGE -->
+        <div class="about-img">
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=90">
+        </div>
+
+        <ul>
+            <li>✔ Manage training programs and schedules easily</li>
+            <li>✔ Track student attendance automatically</li>
+            <li>✔ Store student and trainer details</li>
+            <li>✔ Generate certificates after course completion</li>
+            <li>✔ Provide role-based login (Admin, Trainer, Student)</li>
+            <li>✔ Analyze performance using reports and analytics</li>
+            <li>✔ Send notifications via email or SMS</li>
+            <li>✔ Reduce manual work and improve efficiency</li>
+        </ul>
+
+        <p>
+            This system helps organizations save time, improve productivity, and manage training processes in a simple and effective way.
+        </p>
+    </div>
+
+</div>
+
+<footer>
+<p>TMS © 2026</p>
+</footer>
+
+</body>
+</html>

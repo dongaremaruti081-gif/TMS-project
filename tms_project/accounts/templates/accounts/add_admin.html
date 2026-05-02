@@ -1,0 +1,119 @@
+{% extends 'base_dashboard.html' %}
+
+{% block content %}
+
+<div class="register-container">
+    <h2>Add New Admin</h2>
+
+    <form method="POST" autocomplete="off">
+        {% csrf_token %}
+
+        <!-- Full Name -->
+        <label>Full Name</label>
+        <input type="text" name="full_name" placeholder="Full Name" value="{{ data.full_name }}">
+        {% if errors.full_name %}
+        <p class="error">{{ errors.full_name }}</p>
+        {% endif %}
+
+        <!-- Username -->
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Username" value="{{ data.username }}">
+        {% if errors.username %}
+        <p class="error">{{ errors.username }}</p>
+        {% endif %}
+
+        <!-- Email -->
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="Email Address" value="{{ data.email }}">
+        {% if errors.email %}
+        <p class="error">{{ errors.email }}</p>
+        {% endif %}
+
+        <!-- Phone -->
+        <label>Phone Number</label>
+        <input type="text" name="phone" placeholder="Phone Number" value="{{ data.phone }}"
+               maxlength="10"
+               onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+               oninput="this.value = this.value.replace(/[^0-9]/g,'')">
+
+        {% if errors.phone %}
+        <p class="error">{{ errors.phone }}</p>
+        {% endif %}
+
+        <!-- Password -->
+        <label>Password</label>
+
+        <div style="position:relative;">
+            <input type="password"
+                   name="password"
+                   id="password"
+                   placeholder="Password"
+                   style="padding-right:40px;"
+                   onkeydown="return event.key !== ' '"
+                   oninput="removeSpaces(this)"
+                   autocomplete="new-password">
+
+            <span onclick="togglePassword('password')"
+                  style="position:absolute; right:12px; top:12px; cursor:pointer;">
+                👁️
+            </span>
+        </div>
+
+        {% if errors.password %}
+        <p class="error">{{ errors.password }}</p>
+        {% endif %}
+
+        <button type="submit">Add Admin</button>
+    </form>
+</div>
+
+<style>
+.register-container {
+    width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+}
+
+.register-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.register-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+}
+
+.register-container button {
+    width: 100%;
+    padding: 12px;
+    background: #5b5cf0;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
+.error{
+    color:red;
+    font-size:13px;
+    margin-top:-10px;
+}
+</style>
+
+<script>
+function togglePassword(id){
+    const field = document.getElementById(id);
+    field.type = field.type === "password" ? "text" : "password";
+}
+
+// 🔥 remove spaces (typed + pasted)
+function removeSpaces(input){
+    input.value = input.value.replace(/\s/g, '');
+}
+</script>
+
+{% endblock %}

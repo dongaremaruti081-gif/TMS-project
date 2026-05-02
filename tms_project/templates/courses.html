@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TMS | Courses</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Poppins;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:white;
+  text-align:center;
+}
+
+h1{
+  margin-top:30px;
+}
+
+/* CONTAINER */
+.container{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:30px;
+}
+
+/* CARD */
+.course{
+  background:white;
+  color:black;
+  padding:20px;
+  margin:15px;
+  border-radius:15px;
+  width:260px;
+  transition:0.3s;
+  box-shadow:0 10px 20px rgba(0,0,0,0.3);
+}
+
+.course:hover{
+  transform:scale(1.08);
+}
+
+/* IMAGE */
+.course img{
+  width:100%;
+  border-radius:10px;
+}
+
+/* TEXT */
+.course h3{
+  margin:10px 0;
+}
+
+.course p{
+  font-size:14px;
+  color:#555;
+}
+
+/* TAGS */
+.tag{
+  display:inline-block;
+  background:#22c55e;
+  color:white;
+  padding:3px 10px;
+  border-radius:10px;
+  font-size:12px;
+  margin-top:5px;
+}
+
+/* BUTTON */
+.btn{
+  margin-top:10px;
+  padding:10px 15px;
+  background:#667eea;
+  border:none;
+  color:white;
+  border-radius:20px;
+  cursor:pointer;
+  width:100%;
+}
+
+.btn:hover{
+  background:#22c55e;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📚 Our Courses</h1>
+
+<div class="container">
+
+<!-- PYTHON -->
+<div class="course">
+<img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4">
+<h3>Python Programming</h3>
+<p>Learn Python from basics to advanced level.</p>
+
+<p>👨‍🏫 Trainer: John Sir</p>
+<p>⏳ Duration: 2 Months</p>
+<p>⭐ Rating: 4.8</p>
+<p>💰 Price: ₹1999</p>
+
+<span class="tag">Beginner</span>
+
+<button class="btn" onclick="enrollCourse('Python')">Enroll Now</button>
+</div>
+
+<!-- WEB -->
+<div class="course">
+<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085">
+<h3>Web Development</h3>
+<p>HTML, CSS, JavaScript full course.</p>
+
+<p>👨‍🏫 Trainer: Rahul Sir</p>
+<p>⏳ Duration: 3 Months</p>
+<p>⭐ Rating: 4.7</p>
+<p>💰 Price: ₹2999</p>
+
+<span class="tag">Intermediate</span>
+
+<button class="btn" onclick="enrollCourse('Web Dev')">Enroll Now</button>
+</div>
+
+<!-- DATA SCIENCE -->
+<div class="course">
+<img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c">
+<h3>Data Science</h3>
+<p>Machine Learning & AI basics.</p>
+
+<p>👨‍🏫 Trainer: Sneha Ma'am</p>
+<p>⏳ Duration: 4 Months</p>
+<p>⭐ Rating: 4.9</p>
+<p>💰 Price: ₹3999</p>
+
+<span class="tag">Advanced</span>
+
+<button class="btn" onclick="enrollCourse('Data Science')">Enroll Now</button>
+</div>
+<!-- JAVA -->
+<div class="course">
+<img src="https://images.unsplash.com/photo-1518770660439-4636190af475">
+<h3>Java Programming</h3>
+<p>Core Java + OOP concepts.</p>
+
+<p>👨‍🏫 Trainer: Amit Sir</p>
+<p>⏳ Duration: 2.5 Months</p>
+<p>⭐ Rating: 4.6</p>
+<p>💰 Price: ₹2499</p>
+
+<span class="tag">Intermediate</span>
+
+<button class="btn" onclick="enrollCourse('Java')">Enroll Now</button>
+</div>
+
+<!-- DJANGO -->
+<div class="course">
+<img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159">
+<h3>Django Development</h3>
+<p>Build full stack web apps using Django.</p>
+
+<p>👨‍🏫 Trainer: Prakash Sir</p>
+<p>⏳ Duration: 3 Months</p>
+<p>⭐ Rating: 4.8</p>
+<p>💰 Price: ₹3499</p>
+
+<span class="tag">Advanced</span>
+
+<button class="btn" onclick="enrollCourse('Django')">Enroll Now</button>
+</div>
+
+<!-- CYBER SECURITY -->
+<div class="course">
+<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b">
+<h3>Cyber Security</h3>
+<p>Learn ethical hacking & security basics.</p>
+
+<p>👨‍🏫 Trainer: Kiran Sir</p>
+<p>⏳ Duration: 2 Months</p>
+<p>⭐ Rating: 4.7</p>
+<p>💰 Price: ₹2999</p>
+
+<span class="tag">Advanced</span>
+
+<button class="btn" onclick="enrollCourse('Cyber Security')">Enroll Now</button>
+</div>
+
+<!-- AI -->
+<div class="course">
+<img src="https://images.unsplash.com/photo-1677442136019-21780ecad995">
+<h3>Artificial Intelligence</h3>
+<p>AI fundamentals and real-world projects.</p>
+
+<p>👨‍🏫 Trainer: Neha Ma'am</p>
+<p>⏳ Duration: 4 Months</p>
+<p>⭐ Rating: 4.9</p>
+<p>💰 Price: ₹4999</p>
+
+<span class="tag">Advanced</span>
+
+<button class="btn" onclick="enrollCourse('AI')">Enroll Now</button>
+</div>
+
+<!-- MYSQL -->
+<div class="course">
+<img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d">
+<h3>MySQL Database</h3>
+<p>Learn database design & queries.</p>
+
+<p>👨‍🏫 Trainer: Rohit Sir</p>
+<p>⏳ Duration: 1.5 Months</p>
+<p>⭐ Rating: 4.5</p>
+<p>💰 Price: ₹1999</p>
+
+<span class="tag">Beginner</span>
+
+<button class="btn" onclick="enrollCourse('MySQL')">Enroll Now</button>
+</div>
+
+<!-- CLOUD -->
+<div class="course">
+<img src="https://images.unsplash.com/photo-1535223289827-42f1e9919769">
+<h3>Cloud Computing</h3>
+<p>AWS, Azure & cloud basics.</p>
+
+<p>👨‍🏫 Trainer: Sagar Sir</p>
+<p>⏳ Duration: 3 Months</p>
+<p>⭐ Rating: 4.6</p>
+<p>💰 Price: ₹3999</p>
+
+<span class="tag">Intermediate</span>
+
+<button class="btn" onclick="enrollCourse('Cloud')">Enroll Now</button>
+</div>
+</div>
+
+
+<script>
+function enrollCourse(course){
+  alert("✅ You enrolled in " + course + " course!");
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+{% extends 'base_dashboard.html' %}
+
+{% block content %}
+
+<style>
+.title{
+    font-size:28px;
+    font-weight:bold;
+}
+.subtitle{
+    color:#6b7280;
+    margin-bottom:20px;
+}
+
+.tabs{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+.tab{
+    padding:8px 15px;
+    border-radius:10px;
+    background:#eef2ff;
+    cursor:pointer;
+    text-decoration:none;
+    color:black;
+}
+
+.notification{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.notification.unread{
+    border-left:4px solid #5b5cf0;
+}
+
+.left{
+    display:flex;
+    gap:10px;
+}
+
+.icon{
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.info{ background:#dbeafe; }
+.success{ background:#dcfce7; }
+.warning{ background:#fee2e2; }
+
+.time{
+    font-size:12px;
+    color:#6b7280;
+}
+
+.btn{
+    font-size:12px;
+    color:#5b5cf0;
+    text-decoration:none;
+    margin-left:10px;
+}
+</style>
+
+<h2 class="title">Notifications</h2>
+<p class="subtitle">{{ unread_count }} unread notifications</p>
+
+<div class="tabs">
+    <div class="tab">All</div>
+
+    <a href="{% url 'mark_all_read' %}" class="tab">
+    Mark all read
+</a>
+</div>
+
+{% for n in notifications %}
+
+<div class="notification {% if not n.is_read %}unread{% endif %}">
+
+    <div class="left">
+
+        <div class="icon {{ n.type }}">
+            {% if n.type == "info" %}i{% endif %}
+            {% if n.type == "success" %}✓{% endif %}
+            {% if n.type == "warning" %}!{% endif %}
+        </div>
+
+        <div>
+            <strong>{{ n.title }}</strong><br>
+            {{ n.message }}<br>
+            <span class="time">{{ n.created_at|timesince }} ago</span>
+        </div>
+
+    </div>
+
+    <div>
+        {% if not n.is_read %}
+            <a href="{% url 'mark_as_read' n.id %}" class="btn">Mark as read</a>
+        {% endif %}
+        <a href="{% url 'delete_notification' n.id %}" class="btn">Delete</a>
+    </div>
+
+</div>
+
+{% empty %}
+<p>No notifications available</p>
+{% endfor %}
+
+{% endblock %}

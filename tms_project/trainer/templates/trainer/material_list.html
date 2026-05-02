@@ -1,0 +1,157 @@
+{% extends "base_dashboard.html" %}
+{% block content %}
+
+<style>
+.container {
+    width: 100%;
+    padding: 25px;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
+}
+
+/* CARD */
+.card {
+    background: #ffffff;
+    padding: 22px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+}
+
+/* ICON */
+.icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    background: linear-gradient(45deg,#6366f1,#4f46e5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+/* TITLE */
+.title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* DESCRIPTION */
+.desc {
+    margin: 8px 0 14px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+/* FOOTER */
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* DATE */
+.date {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+/* BUTTON */
+.download-btn {
+    background: #4b5cff;
+    color: white;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.download-btn:hover {
+    background: #3a4bdc;
+}
+
+/* EMPTY */
+.empty {
+    text-align: center;
+    margin-top: 70px;
+    color: #9ca3af;
+}
+</style>
+
+<div class="container">
+
+    <div class="header">
+        <h2>📚 Training Materials</h2>
+    </div>
+
+    {% if materials %}
+        <div class="grid">
+
+            {% for m in materials %}
+            <div class="card">
+
+                <div class="icon">📄</div>
+
+                <div class="title">{{ m.title }}</div>
+
+                <div class="desc">
+                    {{ m.description|default:"No description available"|truncatechars:90 }}
+                </div>
+
+                <div class="footer">
+                    <span class="date">
+                        {{ m.uploaded_at|date:"d M Y" }}
+                    </span>
+
+                    {% if m.file %}
+                        <a href="{{ m.file.url }}" download>
+                            <button class="download-btn">⬇ Download</button>
+                        </a>
+                    {% endif %}
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+    {% else %}
+        <div class="empty">
+            <h4>No materials available</h4>
+            <p>Uploaded materials will appear here</p>
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

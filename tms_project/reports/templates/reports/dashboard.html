@@ -1,0 +1,44 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+/* 🔥 DATA FROM DJANGO */
+const days = {{ days|safe }};
+const counts = {{ counts|safe }};
+const categories = {{ categories|safe }};
+const categoryCounts = {{ category_counts|safe }};
+
+/* 🔵 LINE CHART (Monthly Growth replace with Weekly Data) */
+new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+        labels: days,
+        datasets: [{
+            label: 'Enrollments',
+            data: counts,
+            tension: 0.3
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+/* 🟢 PIE CHART (Dynamic Roles/Category) */
+new Chart(document.getElementById('pieChart'), {
+    type: 'pie',
+    data: {
+        labels: categories,
+        datasets: [{
+            data: categoryCounts
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+</script>

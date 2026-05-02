@@ -1,0 +1,255 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+
+<div class="manage-admins-section">
+
+    <!-- HEADER -->
+    <div class="page-top">
+        <h1>Assign Training</h1>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-box">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- EMPLOYEE SELECT -->
+            <div class="form-group">
+                <label>Select Employees</label>
+
+                <!-- SEARCH -->
+                <input type="text" id="empSearch" placeholder="Search employee..." class="search-input">
+
+                <!-- LIST -->
+                <div class="employee-list">
+
+                    {% for emp in employees %}
+                    <label class="emp-card">
+                        <input type="checkbox"
+                               name="employees"
+                               value="{{ emp.id }}"
+                               data-department="{{ emp.department }}">
+
+                        <div class="emp-info">
+                            <div>
+                                <div class="emp-name">
+                                    {{ emp.full_name|default:emp.username }}
+                                </div>
+                                <div class="emp-dept">
+                                    {{ emp.department }}
+                                </div>
+                            </div>
+                        </div>
+                    </label>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+            <!-- TRAINING -->
+            <div class="form-group">
+                <label>Select Training</label>
+                <select name="training" required>
+                    <option value="">Choose Training</option>
+                    {% for t in training_list %}
+                    <option value="{{ t.id }}">{{ t.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- TRAINER -->
+            <div class="form-group">
+                <label>Select Trainer</label>
+                <select name="trainer" id="trainerSelect" required>
+                    <option value="">Choose Trainer</option>
+                    {% for tr in trainers %}
+                    <option value="{{ tr.id }}" data-department="{{ tr.department }}">
+                        {{ tr.full_name|default:tr.username }} ({{ tr.department }})
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit">Assign Training</button>
+
+        </form>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-box">
+        <table>
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Training</th>
+                    <th>Trainer</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for t in trainings %}
+                <tr>
+                    <td>{{ t.employee.full_name|default:t.employee.username }}</td>
+                    <td>{{ t.title }}</td>
+                    <td>{{ t.trainer_name }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="empty-row">No Training Assigned</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- CSS -->
+<style>
+.manage-admins-section{
+    padding:30px;
+    background:#f5f7fb;
+    font-family:'Poppins',sans-serif;
+}
+
+.page-top h1{
+    font-size:32px;
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+.form-box, .table-box{
+    background:#fff;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.05);
+    margin-bottom:20px;
+}
+
+.search-input{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #ddd;
+    margin-bottom:10px;
+}
+
+.employee-list{
+    max-height:250px;
+    overflow-y:auto;
+    border:1px solid #eee;
+    border-radius:12px;
+    padding:10px;
+}
+
+.emp-card{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.emp-card:hover{
+    background:#f1f5ff;
+}
+
+.emp-card input{
+    transform:scale(1.2);
+}
+
+.emp-name{ font-weight:600; }
+.emp-dept{ font-size:12px; color:#6b7280; }
+
+select{
+    width:100%;
+    height:45px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    padding:0 10px;
+}
+
+button{
+    background:#5b5cf0;
+    color:#fff;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    width:100%;
+    font-weight:600;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#eef0ff;
+    padding:12px;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+    text-align:center;
+}
+
+.empty-row{
+    text-align:center;
+    padding:20px;
+    color:#888;
+}
+</style>
+
+<!-- JS -->
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    const trainerSelect = document.getElementById("trainerSelect");
+    const search = document.getElementById("empSearch");
+
+    /* ✅ DYNAMIC CHECKBOX HANDLING (IMPORTANT FIX) */
+    document.addEventListener("change", function(e){
+        if(e.target.name === "employees"){
+            filterTrainer();
+        }
+    });
+
+    function filterTrainer(){
+        let departments = [];
+
+        document.querySelectorAll("input[name='employees']:checked")
+        .forEach(cb => {
+            departments.push(cb.dataset.department);
+        });
+
+        for(let option of trainerSelect.options){
+            if(option.value === ""){
+                option.style.display = "block";
+                continue;
+            }
+
+            let dept = option.dataset.department;
+            option.style.display = departments.includes(dept) ? "block" : "none";
+        }
+
+        trainerSelect.value = "";
+    }
+
+    /* SEARCH */
+    search.addEventListener("keyup", function(){
+        let val = this.value.toLowerCase();
+
+        document.querySelectorAll(".emp-card").forEach(card => {
+            let text = card.innerText.toLowerCase();
+            card.style.display = text.includes(val) ? "flex" : "none";
+        });
+    });
+
+});
+</script>
+
+{% endblock %}

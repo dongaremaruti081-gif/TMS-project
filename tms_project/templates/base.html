@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TMS Ultra Final Pro</title>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+body{
+font-family:'Inter',sans-serif;
+background:linear-gradient(270deg,#e0f2fe,#eef2ff,#f0f9ff,#e0f7fa);
+background-size:400% 400%;
+animation:bgMove 10s ease infinite;
+scroll-behavior:smooth;
+}
+
+@keyframes bgMove{
+0%{background-position:0%}
+50%{background-position:100%}
+100%{background-position:0%}
+}
+
+.glass{
+background:rgba(255,255,255,0.7);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,0.2);
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.gradient-text{
+background:linear-gradient(90deg,#2563eb,#9333ea,#06b6d4);
+background-clip:text;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.lift{transition:0.3s;}
+.lift:hover{transform:translateY(-10px) scale(1.03);}
+
+.faq p{
+max-height:0;
+overflow:hidden;
+transition:0.4s;
+}
+.faq.active p{
+max-height:200px;
+margin-top:10px;
+}
+
+.input-group{
+position:relative;
+}
+.input-group input,
+.input-group textarea{
+width:100%;
+padding:14px;
+border-radius:10px;
+border:1px solid #ccc;
+background:transparent;
+outline:none;
+}
+.input-group label{
+position:absolute;
+left:12px;
+top:12px;
+background:white;
+padding:0 5px;
+font-size:14px;
+color:#666;
+transition:0.3s;
+}
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label,
+.input-group textarea:focus + label,
+.input-group textarea:not(:placeholder-shown) + label{
+top:-10px;
+font-size:12px;
+color:#2563eb;
+}
+
+/* DARK MODE */
+.dark{
+background:#0f172a !important;
+color:white !important;
+}
+.dark .glass{background:rgba(0,0,0,0.6);}
+.dark p,.dark h1,.dark h2,.dark h3,.dark li{color:#e2e8f0 !important;}
+.dark input,.dark textarea{background:#1e293b;color:white;border:1px solid #475569;}
+.dark label{background:#0f172a;color:#cbd5f5;}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 glass">
+<div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+
+<h1 class="text-2xl font-bold">TMS Pro</h1>
+
+<nav class="hidden md:flex gap-6 font-medium">
+<a href="/">Home</a>
+<a href="#about">About</a>
+<a href="#faq">FAQ</a>
+<a href="#location">Location</a>
+<a href="#contact">Contact</a>
+</nav>
+
+<button onclick="toggleDark()" class="px-4 py-2 bg-gray-800 text-white rounded-lg">
+🌙
+</button>
+
+</div>
+</header>
+
+<!-- LOGIN / REGISTER BLOCK -->
+{% block content %}
+{% endblock %}
+
+<!-- HERO (only homepage concept) -->
+<section class="py-24">
+<div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 px-6 items-center">
+
+<div>
+<h1 class="text-5xl font-extrabold gradient-text mb-6">
+Modern Training Management System
+</h1>
+
+<p class="mb-6 text-gray-600">
+Manage training, attendance, certificates, reports and analytics.
+</p>
+
+<a href="{% url 'login' %}">
+<button class="bg-black text-white px-6 py-3 rounded-lg">
+Login
+</button>
+</a>
+</div>
+
+<img src="https://images.unsplash.com/photo-1557804506-669a67965ba0"
+class="rounded-2xl shadow-2xl">
+
+</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="py-20">
+<div class="max-w-4xl mx-auto px-6 text-center">
+
+<h2 class="text-4xl font-bold mb-10">About System</h2>
+
+<div class="glass p-8 rounded-2xl text-left">
+<ul class="space-y-3 text-lg">
+<li>✔ Training schedule management</li>
+<li>✔ Attendance automation</li>
+<li>✔ Role-based login</li>
+<li>✔ Reports & analytics</li>
+<li>✔ Certificates</li>
+</ul>
+</div>
+
+</div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-20">
+<div class="max-w-4xl mx-auto px-6">
+
+<h2 class="text-3xl font-bold text-center mb-10">FAQ</h2>
+
+<div class="space-y-4">
+
+<div class="glass p-5 rounded-2xl faq" onclick="toggleFAQ(this)">
+<h3>What is TMS?</h3>
+<p>Training Management System for automation.</p>
+</div>
+
+<div class="glass p-5 rounded-2xl faq" onclick="toggleFAQ(this)">
+<h3>Who can use it?</h3>
+<p>Admin, Trainers and Trainees.</p>
+</div>
+
+<div class="glass p-5 rounded-2xl faq" onclick="toggleFAQ(this)">
+<h3>Is it secure?</h3>
+<p>Yes role-based system.</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- LOCATION + CONTACT -->
+<section id="location" class="py-20 bg-gray-100">
+<div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 px-6">
+
+<iframe class="w-full h-[350px] rounded-xl shadow-xl border-0"
+src="https://www.google.com/maps/embed?pb=!1m18...">
+</iframe>
+
+<div class="bg-white p-6 rounded-xl shadow-xl">
+
+<h3 class="text-2xl font-bold mb-4">Contact Info</h3>
+
+<p>📧 greentinsolutions@gmail.com</p>
+<p>📞 +91 9876543210</p>
+
+<div class="flex gap-3 mt-4">
+<button onclick="callNow()" class="bg-green-500 text-white px-4 py-2 rounded">Call</button>
+<button onclick="whatsapp()" class="bg-green-600 text-white px-4 py-2 rounded">WhatsApp</button>
+<button onclick="copyAddress()" class="bg-blue-500 text-white px-4 py-2 rounded">Copy</button>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- CONTACT FORM -->
+<section id="contact" class="py-20">
+<div class="max-w-4xl mx-auto px-6">
+
+<h2 class="text-3xl font-bold text-center mb-6">Contact</h2>
+
+<div class="glass p-6 rounded-2xl space-y-4">
+
+<div class="input-group">
+<input type="text" placeholder=" " oninput="this.value=this.value.replace(/[^A-Za-z ]/g,'')">
+<label>Name</label>
+</div>
+
+<div class="input-group">
+<input type="email" placeholder=" ">
+<label>Email</label>
+</div>
+
+<div class="input-group">
+<textarea rows="4" placeholder=" "></textarea>
+<label>Message</label>
+</div>
+
+<button class="w-full bg-black text-white py-3 rounded">
+Send
+</button>
+
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-black text-white text-center py-10">
+© 2026 TMS System
+</footer>
+
+<script>
+function toggleFAQ(el){el.classList.toggle("active");}
+function toggleDark(){document.body.classList.toggle("dark");}
+function callNow(){window.location.href="tel:+919876543210";}
+function whatsapp(){window.open("https://wa.me/919876543210");}
+function copyAddress(){
+navigator.clipboard.writeText("Greentin Solutions Pvt Ltd");
+alert("Copied!");
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+{% extends 'base_dashboard.html' %}
+
+{% block content %}
+
+<style>
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.subtitle{
+    color:#6b7280;
+    margin-top:5px;
+    margin-bottom:25px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:20px;
+}
+
+.card h4{
+    font-size:14px;
+    color:#6b7280;
+}
+
+.card .number{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.chart-section{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+    margin-top:25px;
+}
+
+.chart-box{
+    background:white;
+    border-radius:16px;
+    padding:20px;
+    height:320px;   /* 🔥 IMPORTANT */
+}
+
+.table-box{
+    background:white;
+    border-radius:16px;
+    margin-top:25px;
+    padding:20px;
+}
+.card-link{
+    text-decoration:none;   /* ❌ underline remove */
+    color:inherit;          /* text color same */
+    display:block;          /* full card clickable */
+}
+
+</style>
+
+<!-- TOP -->
+<div class="top-bar">
+    <div>
+        <h1>Reports Dashboard</h1>
+        <p class="subtitle">Analytics Overview</p>
+    </div>
+</div>
+
+<!-- CARDS (CLICKABLE 🔥) -->
+<div class="cards">
+
+    <!-- Total Users -->
+    <a href="{% url 'all_users' %}" class="card-link">
+        <div class="card">
+            <h4>Total Users</h4>
+            <div class="number">{{ total_users }}</div>
+        </div>
+    </a>
+
+    <!-- Trainees -->
+    <a href="{% url 'users_by_role' 'Trainee' %}" class="card-link">
+        <div class="card">
+            <h4>Trainees</h4>
+            <div class="number">{{ trainees }}</div>
+        </div>
+    </a>
+
+    <!-- Trainers -->
+    <a href="{% url 'users_by_role' 'Trainer' %}" class="card-link">
+        <div class="card">
+            <h4>Trainers</h4>
+            <div class="number">{{ trainers }}</div>
+        </div>
+    </a>
+
+    <!-- Managers -->
+    <a href="{% url 'users_by_role' 'Manager' %}" class="card-link">
+        <div class="card">
+            <h4>Managers</h4>
+            <div class="number">{{ managers }}</div>
+        </div>
+    </a>
+
+    <!-- Admins -->
+    <a href="{% url 'users_by_role' 'Admin' %}" class="card-link">
+        <div class="card">
+            <h4>Admins</h4>
+            <div class="number">{{ admins }}</div>
+        </div>
+    </a>
+
+</div>
+<!-- CHARTS -->
+<div class="chart-section">
+
+    <div class="chart-box">
+        <h3>User Growth</h3>
+        <canvas id="lineChart"></canvas>
+    </div>
+
+
+
+</div>
+
+<!-- TABLE -->
+<div class="table-box">
+    <h3>Recent Reports</h3>
+
+    <table style="width:100%;">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+
+        {% for report in reports %}
+        <tr>
+            <td>{{ report.id }}</td>
+            <td>{{ report.name }}</td>
+            <td>{{ report.generated_date|date:"d M Y" }}</td>
+            <td>{{ report.status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const months = JSON.parse('{{ months|escapejs }}');
+const growthData = JSON.parse('{{ counts|escapejs }}');
+
+new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+        labels: months,
+        datasets: [{
+            label: 'Users Growth',
+            data: growthData,
+            borderColor: '#5b5cf0',
+            backgroundColor: 'rgba(91,92,240,0.1)',  // 🔥 fill effect
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: '#5b5cf0'
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: "#eee"
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
+            }
+        }
+    }
+});
+
+
+// 🔥 LINE CHART (Figma Smooth)
+new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+        labels: months,
+        datasets: [{
+            label: 'Users Growth',
+            data: growthData,
+            borderColor: '#6366f1',
+            backgroundColor: 'rgba(99,102,241,0.15)',
+            fill: true,
+            tension: 0.5,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            pointBackgroundColor: '#6366f1'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,  // 🔥 IMPORTANT
+        plugins: {
+            legend: { display: false }
+        },
+        layout: {
+            padding: 10
+        },
+        scales: {
+            x: {
+                grid: { display: false },
+                ticks: {
+                    color: '#6b7280'
+                }
+            },
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: '#f1f5f9'
+                },
+                ticks: {
+                    color: '#6b7280'
+                }
+            }
+        }
+    }
+});
+
+</script>
+{% endblock %}

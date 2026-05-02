@@ -1,0 +1,16 @@
+{% extends 'base_dashboard.html' %}
+
+{% block content %}
+
+<h2>Assignments</h2>
+
+{% for a in assignments %}
+    <div style="background:#fff;padding:15px;margin-bottom:10px;border-radius:10px;">
+        <b>{{ a.title }}</b><br>
+        <small>Due: {{ a.due_date }}</small>
+    </div>
+{% empty %}
+    <p>No assignments yet</p>
+{% endfor %}
+
+{% endblock %}

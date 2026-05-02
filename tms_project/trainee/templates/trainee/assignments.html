@@ -1,0 +1,112 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+
+<style>
+.card-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.stat-card{
+    background:#fff;
+    padding:15px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+}
+
+.list-card{
+    background:#fff;
+    margin-top:20px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+}
+
+.assignment{
+    display:flex;
+    justify-content:space-between;
+    padding:15px;
+    border-top:1px solid #eee;
+    align-items:center;
+}
+
+.badge{
+    padding:3px 10px;
+    border-radius:10px;
+    font-size:12px;
+}
+
+.pending{background:#f3f4f6;}
+.progress{background:#fef3c7;}
+.submitted{background:#dbeafe;}
+.graded{background:#dcfce7;}
+
+.btn{
+    padding:8px 15px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(90deg,#7c3aed,#6366f1);
+    color:white;
+}
+</style>
+
+<h2>Assignments</h2>
+<p style="color:#6b7280;">Track and manage your course assignments</p>
+
+<!-- TOP STATS -->
+<div class="card-row">
+    <div class="stat-card">🔴 {{ urgent }}<br>Urgent</div>
+    <div class="stat-card">🟡 {{ progress }}<br>In Progress</div>
+    <div class="stat-card">🟢 {{ completed }}<br>Completed</div>
+</div>
+
+<!-- LIST -->
+<div class="list-card">
+
+    <div style="padding:15px; font-weight:600;">All Assignments</div>
+
+    {% for a in assignments %}
+    <div class="assignment">
+
+        <div>
+            <b>{{ a.title }}</b>
+            <span class="badge {{ a.status }}">{{ a.status|title }}</span><br>
+
+            <small>{{ a.course }}</small><br>
+            <small>📅 Due: {{ a.due }} | {{ a.days_left }} days left</small>
+
+            {% if a.grade %}
+                <br><small>Grade: {{ a.grade }}</small>
+            {% endif %}
+        </div>
+
+        <div>
+    {% if a.status == 'pending' %}
+        <a href="{% url 'start_assignment' a.id %}">
+            <button class="btn">Start</button>
+        </a>
+
+    {% if a.id %}
+    <a href="{% url 'start_assignment' a.id %}">
+        <button class="btn">Start</button>
+    </a>
+{% endif %}
+
+    {% elif a.status == 'submitted' %}
+        <a href="{% url 'view_assignment' a.id %}">
+            <button class="btn">Review</button>
+        </a>
+
+    {% else %}
+        <a href="{% url 'view_assignment' a.id %}">
+            <button class="btn">View</button>
+        </a>
+    {% endif %}
+</div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

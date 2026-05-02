@@ -1,0 +1,259 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+
+<style>
+/* ================= GLOBAL ================= */
+.manage-admins-section{
+    padding:30px;
+    background:#f5f7fb;
+    font-family:Arial;
+}
+
+/* ================= TOP ================= */
+.page-top h1{
+    font-size:28px;
+}
+.subtitle{
+    color:#6b7280;
+    margin-top:5px;
+    margin-bottom:25px;
+}
+
+/* ================= CARDS (SUPERADMIN STYLE MATCH) ================= */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:20px;
+}
+
+.card h4{
+    font-size:14px;
+    color:#6b7280;
+    margin-bottom:10px;
+}
+
+.card h2{
+    font-size:30px;
+    font-weight:bold;
+}
+
+.green{ color:green; font-size:14px; }
+
+/* ================= CHART SECTION (MATCH SUPERADMIN EXACT STYLE) ================= */
+.chart-section{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.chart-box{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:20px;
+    height:280px;
+}
+
+/* ================= TABLE ================= */
+.table-box{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:15px 20px;
+    border-top:1px solid #e5e7eb;
+}
+
+th{
+    background:#f9fafb;
+    color:#6b7280;
+}
+
+/* ================= STATUS ================= */
+.status{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.active{background:#dcfce7;color:#15803d;}
+.good{background:#dbeafe;color:#1d4ed8;}
+.avg{background:#fef9c3;color:#a16207;}
+.poor{background:#fee2e2;color:#b91c1c;}
+
+canvas {
+    width: 100% !important;
+    height: 220px !important;
+}
+</style>
+
+<div class="manage-admins-section">
+
+    <!-- TOP -->
+    <div class="page-top">
+        <h1>Reports & Analytics</h1>
+        <p class="subtitle">Team performance based on attendance</p>
+    </div>
+
+    <!-- ================= CARDS ================= -->
+    <div class="cards">
+
+        <div class="card">
+            <h4>Team Members</h4>
+            <h2>{{ team_members }}</h2>
+            <div class="green">Live Data</div>
+        </div>
+
+        <div class="card">
+            <h4>Avg Attendance</h4>
+            <h2>{{ attendance_rate }}%</h2>
+            <div class="green">Live Data</div>
+        </div>
+
+        <div class="card">
+            <h4>Training Hours</h4>
+            <h2>{{ training_hours }}</h2>
+            <div class="green">Live Data</div>
+        </div>
+
+        <div class="card">
+            <h4>Engagement Score</h4>
+            <h2>{{ attendance_rate }}%</h2>
+            <div class="green">Attendance Based</div>
+        </div>
+
+    </div>
+
+    <!-- ================= CHARTS (SUPERADMIN STYLE MATCHED) ================= -->
+    <div class="chart-section">
+
+        <!-- PIE -->
+        <div class="chart-box">
+            <h3>Performance Overview</h3>
+            <canvas id="attendanceChart"></canvas>
+        </div>
+
+        <!-- LINE -->
+        <div class="chart-box">
+            <h3>Attendance Trend</h3>
+            <canvas id="trendChart"></canvas>
+        </div>
+
+    </div>
+
+    <!-- ================= TABLE ================= -->
+    <div class="table-box">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Department</th>
+                    <th>Attendance</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for emp in employees %}
+                <tr>
+                    <td>{{ emp.name }}</td>
+                    <td>{{ emp.department }}</td>
+                    <td>{{ emp.attendance }}%</td>
+
+                    <td>
+                        {% if emp.status == "Excellent" %}
+                            <span class="status active">Excellent</span>
+                        {% elif emp.status == "Good" %}
+                            <span class="status good">Good</span>
+                        {% elif emp.status == "Average" %}
+                            <span class="status avg">Average</span>
+                        {% else %}
+                            <span class="status poor">Poor</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="text-align:center;">No Data Available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- ================= CHART JS ================= -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let performanceData = {{ performance_data|safe }};
+
+if (performanceData.every(v => v === 0)) {
+    document.getElementById('attendanceChart').parentElement.innerHTML =
+        "<p style='text-align:center;color:gray;margin-top:80px;'>No Performance Data Available</p>";
+} else {
+    new Chart(document.getElementById('attendanceChart'), {
+        type: 'doughnut',  // 🔥 better than pie
+        data: {
+            labels: ['Excellent','Good','Average','Poor'],
+            datasets: [{
+                data: performanceData,
+                backgroundColor: ['#22c55e','#3b82f6','#facc15','#ef4444']
+            }]
+        },
+        options: {
+            cutout: '60%', // 🔥 modern UI
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+}
+
+/* LINE CHART */
+new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: {
+        labels: {{ attendance_labels|safe }},
+        datasets: [{
+            label: 'Attendance Trend',
+            data: {{ attendance_values|safe }},
+            borderColor: '#5b5cf0',
+            backgroundColor: 'rgba(91,92,240,0.12)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 5
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+</script>
+
+{% endblock %}

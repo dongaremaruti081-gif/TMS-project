@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TMS | Home</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* 🎨 PURPLE GRADIENT BACKGROUND (About page same) */
+body {
+    margin:0;
+    font-family: 'Poppins', sans-serif;
+    color:white;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+}
+
+/* HEADER */
+header {
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+}
+
+nav ul {
+    text-align:right;
+}
+
+nav ul li {
+    display:inline-block;
+    margin:0 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+nav ul li a:hover{
+    color:#ffd700;
+}
+
+/* LOGO */
+.logo-img{
+    height:90px;
+}
+
+/* HERO */
+.hero {
+    width:100%;
+    height:420px;
+    background:url("https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1600&q=90") no-repeat center/cover;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    position:relative;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+}
+
+.hero-content{
+    position:relative;
+    z-index:1;
+    animation:fadeUp 1.5s ease;
+}
+
+.hero h1{
+    font-size:42px;
+}
+
+/* 🔥 BUTTON */
+.btn{
+    margin-top:20px;
+    padding:14px 30px;
+    background:linear-gradient(135deg,#ff9800,#ff5722);
+    color:white;
+    border:none;
+    border-radius:30px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn:hover{
+    transform:scale(1.1);
+    box-shadow:0 0 20px orange;
+}
+
+/* TEXT ANIMATION */
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(40px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+/* 🌟 FEATURES SECTION */
+.features {
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    padding:50px 20px;
+}
+
+.feature-box{
+    background:white;
+    color:black;
+    padding:25px;
+    margin:15px;
+    border-radius:15px;
+    width:260px;
+    text-align:center;
+    transition:0.4s;
+    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+
+.feature-box:hover{
+    transform:translateY(-10px) scale(1.05);
+}
+
+/* FOOTER */
+.footer {
+    background:#0f172a;
+    padding:50px 20px;
+    margin-top:50px;
+}
+
+.footer-container {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:30px;
+}
+
+.footer-col h3 {
+    color:#38bdf8;
+}
+
+.footer-col ul {
+    list-style:none;
+    padding:0;
+}
+
+.footer-col ul li {
+    margin:8px 0;
+}
+
+.footer-col ul li a {
+    color:#cbd5e1;
+    text-decoration:none;
+}
+
+.footer-col ul li a:hover{
+    color:#38bdf8;
+}
+
+.footer-bottom {
+    text-align:center;
+    margin-top:20px;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    nav ul {text-align:center;}
+    nav ul li {display:block;}
+    .hero{height:260px;}
+    .hero h1{font-size:26px;}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+<img src="img/logo.png" class="logo-img">
+
+<nav>
+<ul>
+<li><a href="{% url 'home' %}">Home</a></li>
+<li><a href="{% url 'about' %}">About</a></li>
+<li><a href="{% url 'features' %}">Features</a></li>
+<li><a href="{% url 'services' %}">Services</a></li>
+<li><a href="{% url 'contact' %}">Contact</a></li>
+<li><a href="{% url 'login' %}">Login</a></li>
+<li><a href="{% url 'register' %}">Register</a></li>
+</ul>
+</nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-content">
+<h1>Manage Trainings Easily</h1>
+<p>Track employee training and performance</p>
+
+<button class="btn" onclick="openRegister()">Get Started 🚀</button>
+</div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+
+<div class="feature-box">
+<h3>📄 Digital System</h3>
+<p>No paperwork required</p>
+</div>
+
+<div class="feature-box">
+<h3>⚡ Fast Performance</h3>
+<p>Optimized and smooth system</p>
+</div>
+
+<div class="feature-box">
+<h3>🌐 Smart Management</h3>
+<p>Easy training handling</p>
+</div>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+<div class="footer-container">
+
+<div class="footer-col">
+<h3>Learn</h3>
+<ul>
+  <li> <a href="{% url 'courses' %}">Courses</a></li>
+<li><a href="{% url 'blog' %}">Blog</a></li>
+<li><a href="{% url 'linkedin' %}">LinkedIn</a></li>
+<li><a href="{% url 'facebook' %}">Facebook</a></li>
+
+</ul>
+</div>
+
+<div class="footer-col">
+<h3>Company</h3>
+<ul>
+  <li><a href="{% url 'about' %}">About</a></li>
+<li><a href="{% url 'careers' %}">Careers</a></li>
+  <li><a href="{% url 'features' %}">Features</a></li>
+<li><a href="{% url 'services' %}">Services</a></li>
+<li><a href="{% url 'contact' %}">Contact</a></li>
+</ul>
+</div>
+
+</div>
+
+<div class="footer-bottom">
+© 2026 TMS Platform
+</div>
+</footer>
+
+<!-- JS -->
+<script>
+function openRegister(){
+    window.location.href = "register.html";
+}
+</script>
+
+</body>
+</html>

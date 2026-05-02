@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .login-container {
+        width: 350px;
+        margin: 80px auto;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        text-align: center;
+        background: white;
+    }
+
+    .login-container h2 {
+        margin-bottom: 20px;
+    }
+
+    .login-container input {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .login-container button {
+        width: 95%;
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .login-container button:hover {
+        background: #0056b3;
+    }
+
+    .error {
+        color: red;
+        margin-top: 10px;
+    }
+
+    .label {
+        display: block;
+        text-align: left;
+        margin-left: 5%;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    /* ✅ password wrapper */
+    .password-wrapper {
+        position: relative;
+        width: 95%;
+        margin: auto;
+    }
+
+    .password-wrapper input {
+        width: 100%;
+        padding-right: 40px;
+    }
+
+    .eye-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        user-select: none;
+        font-size: 16px;
+    }
+</style>
+
+<div class="login-container">
+    <h2>Login</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label class="label">Username</label>
+        <input type="text" name="username" placeholder="Username" required>
+
+        <label class="label">Password</label>
+
+        <!-- ✅ FINAL FIXED PASSWORD FIELD -->
+        <div class="password-wrapper">
+            <input type="password"
+                   name="password"
+                   id="password"
+                   placeholder="Password"
+                   required
+                   oninput="removeSpaces(this)">
+
+            <span class="eye-icon" onclick="togglePassword()" id="eyeIcon">
+                👁️
+            </span>
+        </div>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <p class="error">{{ error }}</p>
+
+    <p>Don't have an account?
+        <a href="{% url 'register' %}">Register</a>
+    </p>
+</div>
+
+<script>
+function togglePassword() {
+    const field = document.getElementById("password");
+    const icon = document.getElementById("eyeIcon");
+
+    if (field.type === "password") {
+        field.type = "text";
+        icon.textContent = "🙈"; // change icon
+    } else {
+        field.type = "password";
+        icon.textContent = "👁️";
+    }
+}
+
+// ✅ remove spaces automatically
+function removeSpaces(field) {
+    field.value = field.value.replace(/\s/g, '');
+}
+</script>
+
+{% endblock %}

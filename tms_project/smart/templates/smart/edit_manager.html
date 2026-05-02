@@ -1,0 +1,135 @@
+{% extends "base_dashboard.html" %}
+{% block content %}
+
+<style>
+.page-container{
+    padding:20px;
+}
+
+/* Card */
+.card{
+    max-width:600px;
+    margin:auto;
+    background:#ffffff;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* Header */
+.card-header{
+    margin-bottom:25px;
+    text-align:center;
+}
+
+.card-header h2{
+    font-size:22px;
+    font-weight:600;
+}
+
+/* Input Group */
+.input-group{
+    margin-bottom:18px;
+}
+
+.input-group label{
+    display:block;
+    font-size:13px;
+    font-weight:500;
+    margin-bottom:6px;
+    color:#374151;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    font-size:14px;
+}
+
+.input-group input:focus{
+    border-color:#2563eb;
+    outline:none;
+    box-shadow:0 0 0 2px rgba(37,99,235,0.1);
+}
+
+/* Buttons */
+.btn-group{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.save-btn{
+    flex:1;
+    background:#2563eb;
+    color:#fff;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    font-size:15px;
+    cursor:pointer;
+}
+
+.save-btn:hover{
+    background:#1d4ed8;
+}
+
+.cancel-btn{
+    flex:1;
+    text-align:center;
+    padding:12px;
+    border-radius:10px;
+    background:#f3f4f6;
+    text-decoration:none;
+    color:#374151;
+}
+</style>
+
+<div class="page-container">
+
+    <div class="card">
+
+        <!-- HEADER -->
+        <div class="card-header">
+            <h2>Edit Manager</h2>
+        </div>
+
+        <!-- FORM -->
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" name="full_name" value="{{ manager.full_name }}" required>
+            </div>
+
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" name="username" value="{{ manager.username }}" required>
+            </div>
+
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" name="email" value="{{ manager.email }}" required>
+            </div>
+
+            <div class="input-group">
+                <label>New Password</label>
+                <input type="password" name="password" placeholder="Leave blank to keep current password">
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="btn-group">
+                <button type="submit" class="save-btn">💾 Save Changes</button>
+                <a href="{% url 'manage_managers' %}" class="cancel-btn">Cancel</a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

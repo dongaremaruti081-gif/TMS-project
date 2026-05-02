@@ -1,0 +1,17 @@
+<h2>{{ a.title }}</h2>
+
+<a href="{{ a.file.url }}" download>📄 Download Assignment PDF</a>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% for q in questions %}
+        <p>{{ q.text }}</p>
+
+        <textarea name="answer_{{ q.id }}"></textarea>
+
+        <input type="file" name="file_{{ q.id }}">
+    {% endfor %}
+
+    <button type="submit">Submit</button>
+</form>

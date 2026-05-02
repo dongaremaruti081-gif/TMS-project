@@ -1,0 +1,16 @@
+<div class="header">
+    <div class="search-box">
+        <input type="text" placeholder="Search...">
+    </div>
+
+    <div class="profile">
+        🔔
+        <div class="avatar">
+            {{ request.user.full_name|first }}
+        </div>
+        <div>
+            <strong>{{ request.user.full_name }}</strong><br>
+            <small>{{ request.user.role }}</small>
+        </div>
+    </div>
+</div>

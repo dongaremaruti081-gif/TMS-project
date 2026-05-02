@@ -1,0 +1,150 @@
+{% extends "base_dashboard.html" %}
+{% block content %}
+
+<style>
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+/* CARD */
+.card {
+    background: #fff;
+    padding: 24px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+/* TITLE */
+h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #111827;
+}
+
+/* INPUT */
+input {
+    padding: 12px;
+    width: 70%;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    outline: none;
+}
+
+input:focus {
+    border-color: #4f46e5;
+}
+
+/* BUTTON */
+button {
+    padding: 12px 16px;
+    border: none;
+    background: linear-gradient(90deg,#4f46e5,#3b82f6);
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #4f46e5;
+    color: white;
+    padding: 14px;
+    text-align: left;
+}
+
+td {
+    padding: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+    background: #f9fafb;
+}
+
+/* DELETE */
+.delete-btn {
+    background: none;
+    color: red;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.delete-btn:hover {
+    text-decoration: underline;
+}
+
+/* EMPTY */
+.empty {
+    text-align: center;
+    color: #6b7280;
+    padding: 20px;
+}
+</style>
+
+<div class="container">
+
+    <!-- ➕ ADD COURSE (NO FORMS.PY) -->
+    <div class="card">
+        <h2>➕ Add Course</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <input type="text"
+                   name="name"
+                   placeholder="Enter course name"
+                   required>
+
+            <button type="submit">Add Course</button>
+        </form>
+    </div>
+
+    <!-- 📋 LIST -->
+    <div class="card">
+        <h2>📚 All Courses</h2>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Course Name</th>
+                <th>Action</th>
+            </tr>
+
+            {% for c in courses %}
+            <tr>
+                <td>{{ c.id }}</td>
+                <td>{{ c.name }}</td>
+                <td>
+                    <form action="{% url 'delete_course' c.id %}"
+                          method="POST"
+                          onsubmit="return confirm('Delete course?');">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="empty">No courses found</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

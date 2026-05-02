@@ -1,0 +1,244 @@
+{% extends "base_dashboard.html" %}
+{% block content %}
+
+<div class="manage-admins-section">
+
+    <!-- TOP -->
+    <div class="page-top">
+        <div>
+            <h1>Attendance Management</h1>
+            <p style="color:#6b7280;">Track and manage trainee attendance</p>
+        </div>
+    </div>
+
+    {% for message in messages %}
+        <div class="alert-box">{{ message }}</div>
+    {% endfor %}
+
+    <!-- FORM BOX -->
+    <div class="search-filter-box">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-column">
+
+                <!-- TRAINEE -->
+                <select name="employee" id="employeeSelect" required>
+                    <option value="">Choose Trainee</option>
+                    {% for t in trainees %}
+                        <option value="{{ t.id }}"
+                                data-trainings="{{ t.training_ids|join:','|default:'' }}">
+                            {{ t.username }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <!-- TRAINING (EMPTY INIT) -->
+                <select name="training" id="trainingSelect" required>
+                    <option value="">Choose Course</option>
+                </select>
+
+                <!-- DATE -->
+                <input type="date" name="date" required>
+
+                <!-- STATUS -->
+                <select name="status" required>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                    <option value="Leave">Leave</option>
+                </select>
+
+                <!-- BUTTON -->
+                <button type="submit" class="add-btn">
+                    Mark Attendance
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-box">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Trainee</th>
+                    <th>Course</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for r in records %}
+                <tr>
+                    <td>{{ r.employee.username }}</td>
+                    <td>{{ r.training.title }}</td>
+                    <td>{{ r.date }}</td>
+
+                    <td>
+                        {% if r.status == "Present" %}
+                            <span class="status present">Present</span>
+                        {% elif r.status == "Absent" %}
+                            <span class="status absent">Absent</span>
+                        {% else %}
+                            <span class="status leave">Leave</span>
+                        {% endif %}
+                    </td>
+
+                    <td style="text-align:center;">⋮</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align:center; padding:30px;">
+                        No records found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<style>
+.manage-admins-section{
+    padding:30px;
+    background:#f5f7fb;
+    font-family:Arial,sans-serif;
+}
+
+.page-top{ margin-bottom:25px; }
+.page-top h1{ font-size:36px; color:#1f2937; }
+
+.alert-box{
+    background:#dbeafe;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:15px;
+    color:#1e40af;
+}
+
+.search-filter-box{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:25px;
+}
+
+.form-column{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.search-filter-box select,
+.search-filter-box input{
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#f3f4f6;
+    font-size:14px;
+    width:100%;
+}
+
+.add-btn{
+    background:#5b5cf0;
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.table-box{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    overflow:hidden;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:18px;
+    border-bottom:1px solid #e5e7eb;
+}
+
+th{
+    background:#f9fafb;
+    color:#64748b;
+}
+
+.status{
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.present{ background:#dcfce7; color:#15803d; }
+.absent{ background:#fee2e2; color:#dc2626; }
+.leave{ background:#fef3c7; color:#b45309; }
+</style>
+
+<!-- ✅ WORKING JS -->
+<script>
+const employeeSelect = document.getElementById("employeeSelect");
+const trainingSelect = document.getElementById("trainingSelect");
+
+employeeSelect.addEventListener("change", function () {
+
+    let selectedOption = this.options[this.selectedIndex];
+    let trainings = selectedOption.dataset.trainings || "";
+
+    // convert to clean array
+    trainings = trainings
+        .split(",")
+        .map(x => x.trim())
+        .filter(x => x !== "");
+
+    // reset dropdown
+    trainingSelect.innerHTML = '<option value="">Choose Course</option>';
+
+    // no courses
+    if (trainings.length === 0) return;
+
+    // fetch titles from hidden options (backend idea safe)
+    trainings.forEach(id => {
+
+        let hidden = document.querySelector(`#courseData option[value="${id}"]`);
+
+        if (hidden) {
+            let opt = document.createElement("option");
+            opt.value = hidden.value;
+            opt.textContent = hidden.textContent;
+            trainingSelect.appendChild(opt);
+        }
+    });
+
+    // auto select single course
+    if (trainings.length === 1) {
+        trainingSelect.value = trainings[0];
+    }
+});
+</script>
+
+<!-- 🔥 hidden master course list -->
+<select id="courseData" style="display:none;">
+    {% for tr in trainings %}
+        <option value="{{ tr.id }}">{{ tr.title }}</option>
+    {% endfor %}
+</select>
+
+{% endblock %}

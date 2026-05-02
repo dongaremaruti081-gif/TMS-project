@@ -1,0 +1,84 @@
+{% extends 'base_dashboard.html' %}
+
+{% block content %}
+
+<div style="padding:30px;">
+
+    <!-- TITLE -->
+    <h2 style="margin-bottom:15px;">
+        All Courses
+    </h2>
+
+    <!-- BACK BUTTON -->
+    <div style="margin-bottom:15px;">
+
+        {% if user.role == "SuperAdmin" %}
+            <a href="{% url 'superadmin_dashboard' %}" class="back-btn">← Back to Dashboard</a>
+
+        {% elif user.role == "Admin" %}
+            <a href="{% url 'admin_dashboard' %}" class="back-btn">← Back to Dashboard</a>
+
+        {% elif user.role == "Manager" %}
+            <a href="{% url 'manager_dashboard' %}" class="back-btn">← Back to Dashboard</a>
+
+        {% elif user.role == "Trainer" %}
+            <a href="{% url 'trainer_dashboard' %}" class="back-btn">← Back to Dashboard</a>
+        {% endif %}
+
+    </div>
+
+    <!-- TABLE -->
+    <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+
+        <thead>
+            <tr style="background:#f3f4f6;">
+                <th style="padding:12px; text-align:left;">Course Name</th>
+                <th style="padding:12px; text-align:left;">Description</th>
+                <th style="padding:12px; text-align:left;">Created Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for c in courses %}
+            <tr style="border-bottom:1px solid #e5e7eb;">
+
+                <td style="padding:12px;">{{ c.title }}</td>
+                <td style="padding:12px;">
+                    {{ c.description|default:"-" }}
+                </td>
+                <td style="padding:12px;">
+                    {{ c.created_at|default:"-" }}
+                </td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" style="text-align:center; padding:20px;">
+                    No Courses Found
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- 🔥 SMALL CSS -->
+<style>
+.back-btn{
+    text-decoration:none;
+    background:#5b5cf0;
+    color:white;
+    padding:8px 15px;
+    border-radius:5px;
+    font-size:14px;
+    display:inline-block;
+}
+
+.back-btn:hover{
+    background:#4a4bdc;
+}
+</style>
+
+{% endblock %}

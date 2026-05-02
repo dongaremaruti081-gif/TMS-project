@@ -1,0 +1,92 @@
+{% extends "base_dashboard.html" %}
+{% block content %}
+
+<style>
+.card{
+    max-width:600px;
+    margin:auto;
+    background:#fff;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.card-header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.input-group{
+    margin-bottom:15px;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+}
+
+.btn-group{
+    display:flex;
+    gap:10px;
+}
+
+.save-btn{
+    flex:1;
+    background:#2563eb;
+    color:white;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+}
+
+.cancel-btn{
+    flex:1;
+    text-align:center;
+    padding:12px;
+    background:#f3f4f6;
+    border-radius:10px;
+    text-decoration:none;
+}
+</style>
+
+<div class="card">
+
+    <div class="card-header">
+        <h2>Edit Trainee</h2>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" name="full_name" value="{{ trainee.full_name }}">
+        </div>
+
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" name="username" value="{{ trainee.username }}">
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" name="email" value="{{ trainee.email }}">
+        </div>
+
+        <div class="input-group">
+            <label>New Password</label>
+            <input type="password" name="password" placeholder="Leave blank to keep same">
+        </div>
+
+        <div class="btn-group">
+            <button class="save-btn">💾 Update</button>
+            <a href="{% url 'manage_trainees' %}" class="cancel-btn">Cancel</a>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

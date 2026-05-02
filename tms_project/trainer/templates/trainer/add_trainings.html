@@ -1,0 +1,155 @@
+{% extends "base_dashboard.html" %}
+
+{% block content %}
+
+<style>
+
+.main-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+}
+
+.form-card {
+    width: 100%;
+    max-width: 520px;
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.form-card h2 {
+    text-align: center;
+    color: #1f2937;
+    margin-bottom: 5px;
+}
+
+.form-card p {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #4a6cf7;
+}
+
+.file-box {
+    border: 2px dashed #c7d2fe;
+    background: #f9faff;
+    padding: 18px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.file-box:hover {
+    border-color: #4a6cf7;
+    background: #eef2ff;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.save-btn {
+    flex: 1;
+    background: #4a6cf7;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.save-btn:hover {
+    background: #3a56d4;
+}
+
+.cancel-btn {
+    flex: 1;
+    background: #f1f5f9;
+    color: #333;
+    text-decoration: none;
+    text-align: center;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.cancel-btn:hover {
+    background: #e2e8f0;
+}
+
+</style>
+
+<div class="main-wrapper">
+
+    <div class="form-card">
+
+        <h2>📤 Add Material</h2>
+        <p>Upload training material for learners</p>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- TITLE -->
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" name="title" required>
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" rows="4"></textarea>
+            </div>
+
+            <!-- FILE -->
+            <div class="form-group">
+                <label>Upload File</label>
+                <div class="file-box">
+                    <input type="file" name="file" required>
+                    <p style="font-size:13px; color:#6b7280;">
+                        Drag & drop or choose file
+                    </p>
+                </div>
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="buttons">
+                <a href="javascript:history.back()" class="cancel-btn">Cancel</a>
+                <button type="submit" class="save-btn">💾 Save Material</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

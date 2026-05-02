@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+.register-container {
+    width: 380px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    text-align: center;
+}
+.register-container h2 {
+    margin-bottom: 20px;
+}
+.register-container input,
+.register-container select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.error{
+    color:red;
+    font-size:13px;
+    text-align:left;
+    margin-top:-5px;
+    margin-bottom:8px;
+}
+.register-container button {
+    width: 100%;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.login-link {
+    margin-top: 15px;
+    display: block;
+}
+.label{
+    display:block;
+    text-align:left;
+    font-size:14px;
+    font-weight:500;
+}
+</style>
+
+<div class="register-container">
+
+<h2>Create Account</h2>
+
+<form method="POST">
+{% csrf_token %}
+
+<!-- Full Name -->
+<label class="label">Full Name</label>
+<input type="text" name="full_name" placeholder="Full Name" value="{{ data.full_name }}">
+{% if errors.full_name %}
+<p class="error">{{ errors.full_name }}</p>
+{% endif %}
+
+<!-- Username -->
+<label class="label">Username</label>
+<input type="text" name="username" placeholder="Username" value="{{ data.username }}">
+{% if errors.username %}
+<p class="error">{{ errors.username }}</p>
+{% endif %}
+
+<!-- Email -->
+<label class="label">Email Address</label>
+<input type="email" name="email" placeholder="Email Address" value="{{ data.email }}">
+{% if errors.email %}
+<p class="error">{{ errors.email }}</p>
+{% endif %}
+
+<!-- Phone -->
+<label class="label">Phone Number</label>
+<input type="text" name="phone" placeholder="Phone Number" value="{{ data.phone }}"
+       maxlength="10"
+       onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+       oninput="this.value = this.value.replace(/[^0-9]/g,'')">
+
+{% if errors.phone %}
+<p class="error">{{ errors.phone }}</p>
+{% endif %}
+
+<!-- Password -->
+<label class="label">Password</label>
+
+<div style="position:relative;">
+    <input type="password"
+           name="password"
+           id="password"
+           placeholder="Password"
+           onkeypress="return event.key !== ' '"
+           oninput="removeSpaces(this)">
+
+    <span onclick="togglePassword('password')"
+          style="position:absolute; right:12px; top:12px; cursor:pointer; user-select:none;">
+        👁️
+    </span>
+</div>
+
+{% if errors.password %}
+<p class="error">{{ errors.password }}</p>
+{% endif %}
+
+<!-- Confirm Password -->
+<label class="label">Confirm Password</label>
+
+<div style="position:relative;">
+    <input type="password"
+           name="confirm_password"
+           id="confirm_password"
+           placeholder="Confirm Password"
+           onkeypress="return event.key !== ' '"
+           oninput="removeSpaces(this)">
+
+    <span onclick="togglePassword('confirm_password')"
+          style="position:absolute; right:12px; top:12px; cursor:pointer; user-select:none;">
+        👁️
+    </span>
+</div>
+
+{% if errors.confirm_password %}
+<p class="error">{{ errors.confirm_password }}</p>
+{% endif %}
+
+<!-- Role -->
+<label class="label">Select Role</label>
+<select name="role">
+    <option value="">-- Select Role --</option>
+    <option value="Admin" {% if data.role == "Admin" %}selected{% endif %}>Admin</option>
+    <option value="Manager" {% if data.role == "Manager" %}selected{% endif %}>Manager</option>
+    <option value="Trainer" {% if data.role == "Trainer" %}selected{% endif %}>Trainer</option>
+    <option value="Trainee" {% if data.role == "Trainee" %}selected{% endif %}>Trainee</option>
+</select>
+{% if errors.role %}
+<p class="error">{{ errors.role }}</p>
+{% endif %}
+
+<button type="submit">Register</button>
+
+</form>
+
+<a href="{% url 'login' %}" class="login-link">
+Already have account? Login
+</a>
+
+</div>
+
+<script>
+function togglePassword(id){
+    const field = document.getElementById(id);
+    field.type = field.type === "password" ? "text" : "password";
+}
+
+// 🔥 remove spaces completely (typed + pasted)
+function removeSpaces(input){
+    input.value = input.value.replace(/\s/g, '');
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,190 @@
+{% extends "base_dashboard.html" %}
+{% block content %}
+
+<style>
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.title{
+    font-size:24px;
+    font-weight:600;
+}
+
+.search-box{
+    width:300px;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.add-btn{
+    background:#2563eb;
+    color:white;
+    padding:10px 16px;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:14px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+/* CARD */
+.card{
+    background:#fff;
+    border-radius:16px;
+    padding:20px;
+    border:1px solid #e5e7eb;
+}
+
+/* HEADER */
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:#e9d5ff;
+    color:#7c3aed;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.name-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.email{
+    font-size:12px;
+    color:#6b7280;
+}
+
+/* PROGRESS */
+.progress-bar{
+    height:8px;
+    background:#e5e7eb;
+    border-radius:10px;
+    margin-top:5px;
+}
+
+.progress{
+    height:100%;
+    background:#2563eb;
+    border-radius:10px;
+}
+
+/* STATUS */
+.status{
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+}
+
+.inprogress{
+    background:#dbeafe;
+    color:#2563eb;
+}
+
+.completed{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+/* FOOTER */
+.card-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:10px;
+}
+
+.actions i{
+    margin-left:10px;
+    cursor:pointer;
+}
+</style>
+
+<!-- TITLE -->
+<div class="top-bar">
+    <h2 class="title">Manage Trainees</h2>
+</div>
+
+<!-- SEARCH -->
+<div style="display:flex;justify-content:space-between;margin-bottom:20px;">
+    <input type="text" placeholder="🔍 Search trainees..." class="search-box">
+
+<a href="{% url 'add_trainee' %}" class="add-btn">+ Add Trainee</a></div>
+
+<!-- CARDS -->
+<div class="grid">
+
+{% for t in trainees %}
+<div class="card">
+
+    <!-- HEADER -->
+    <div class="card-header">
+        <div class="name-box">
+            <div class="avatar">{{ t.initial }}</div>
+            <div>
+                <div>{{ t.name }}</div>
+                <div class="email">{{ t.email }}</div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- PROGRAM -->
+    <div style="font-size:12px;color:#6b7280;">Current Program</div>
+    <div><b>{{ t.program }}</b></div>
+
+    <br>
+
+    <!-- PROGRESS -->
+    <div style="display:flex;justify-content:space-between;font-size:12px;">
+        <span>Progress</span>
+        <span>{{ t.progress }}%</span>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress" style="width:{{ t.progress }}%"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="card-footer">
+
+        {% if t.status == "Completed" %}
+            <span class="status completed">Completed</span>
+        {% else %}
+            <span class="status inprogress">In Progress</span>
+        {% endif %}
+
+        <div class="actions">
+    <a href="{% url 'edit_trainee' t.id %}">✏️</a>
+    <a href="{% url 'delete_trainee' t.id %}" style="color:red;">🗑️</a>
+</div>
+
+    </div>
+
+</div>
+{% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,233 @@
+{% extends 'base_dashboard.html' %}
+
+{% block content %}
+
+<div class="manage-admins-section">
+
+    <div class="page-top">
+        <div>
+            <h1>Manage Admins</h1>
+        </div>
+
+        <a href="{% url 'add_admin' %}" class="add-btn">+ Add Admin</a>
+    </div>
+
+    <!-- Search + Filter -->
+    <div class="search-filter-box">
+        <input type="text" id="searchInput" placeholder="🔍 Search admins...">
+        <button class="filter-btn">⚲ Filter</button>
+    </div>
+
+    <!-- Admin Table -->
+    <div class="table-box">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Last Active</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for admin in admins %}
+                <!-- ✅ FIX: class added here -->
+                <tr class="admin-row">
+                    <td>{{ admin.full_name }}</td>
+                    <td>{{ admin.email }}</td>
+                    <td>{{ admin.role }}</td>
+
+                    <td>
+                        {% if admin.is_active %}
+                            <span class="status active">Active</span>
+                        {% else %}
+                            <span class="status inactive">Inactive</span>
+                        {% endif %}
+                    </td>
+
+                    <td>Recently Active</td>
+
+                    <td class="action-buttons">
+                        <a href="{% url 'toggle_admin_status' admin.id %}" class="toggle-btn">
+                            {% if admin.is_active %}
+                                Deactivate
+                            {% else %}
+                                Activate
+                            {% endif %}
+                        </a>
+
+                        <a href="{% url 'edit_admin' admin.id %}" class="edit-btn">Edit</a>
+
+                        <a href="{% url 'delete_admin' admin.id %}"
+                           class="delete-btn"
+                           onclick="return confirm('Are you sure to delete this admin?')">
+                           Delete
+                        </a>
+                    </td>
+
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align:center; padding:30px;">
+                        No Admin Found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<style>
+.manage-admins-section{
+    padding:30px;
+    background:#f5f7fb;
+    font-family:Arial,sans-serif;
+}
+
+.page-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+.page-top h1{
+    font-size:36px;
+    color:#1f2937;
+}
+
+.add-btn{
+    background:#5b5cf0;
+    color:white;
+    text-decoration:none;
+    padding:14px 22px;
+    border-radius:12px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.search-filter-box{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:16px;
+    display:flex;
+    gap:15px;
+    margin-bottom:25px;
+}
+.search-filter-box input{
+    flex:1;
+    padding:16px;
+    border:none;
+    border-radius:12px;
+    background:#f3f4f6;
+    font-size:16px;
+}
+.filter-btn{
+    padding:14px 24px;
+    border:1px solid #d1d5db;
+    background:white;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+.table-box{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    overflow:hidden;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+th,td{
+    padding:20px;
+    text-align:left;
+    border-bottom:1px solid #e5e7eb;
+}
+th{
+    background:#f9fafb;
+    color:#64748b;
+}
+
+.status{
+    padding:7px 16px;
+    border-radius:20px;
+    font-size:14px;
+}
+.active{
+    background:#dcfce7;
+    color:#15803d;
+}
+.inactive{
+    background:#f3f4f6;
+    color:#6b7280;
+}
+
+.action-buttons{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.toggle-btn{
+    background:#f59e0b;
+    color:white;
+    padding:6px 12px;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:14px;
+}
+.toggle-btn:hover{
+    background:#d97706;
+}
+
+.edit-btn{
+    background:#3b82f6;
+    color:white;
+    padding:6px 12px;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:14px;
+}
+.edit-btn:hover{
+    background:#2563eb;
+}
+
+.delete-btn{
+    background:#ef4444;
+    color:white;
+    padding:6px 12px;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:14px;
+}
+.delete-btn:hover{
+    background:#dc2626;
+}
+</style>
+
+<!-- ✅ FIX: script outside style -->
+<script>
+document.getElementById("searchInput").addEventListener("keyup", function() {
+    let value = this.value.toLowerCase();
+    let rows = document.querySelectorAll(".admin-row");
+
+    rows.forEach(function(row){
+        let text = row.innerText.toLowerCase();
+
+        if(text.includes(value)){
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+});
+</script>
+
+{% endblock %}

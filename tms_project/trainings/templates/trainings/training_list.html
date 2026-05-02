@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+/* Page */
+.page {
+    padding: 30px;
+    background: #f4f6f9;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+}
+
+.add-btn {
+    background: linear-gradient(135deg, #007bff, #0056d2);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.add-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Card */
+.card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #f1f3f6;
+}
+
+thead th {
+    padding: 15px;
+    text-align: left;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #666;
+}
+
+tbody td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Hover */
+tbody tr:hover {
+    background: #f9fafc;
+}
+
+/* Badge */
+.badge {
+    background: #e6f7ee;
+    color: #1e7e34;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+/* Empty */
+.empty {
+    text-align: center;
+    padding: 20px;
+    color: gray;
+}
+</style>
+
+<div class="page">
+
+    <!-- Header -->
+    <div class="header">
+        <h2>Training List</h2>
+
+        <a href="{% url 'add_training' %}" class="add-btn">
+            + Add Training
+        </a>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Trainer</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for t in trainings %}
+                <tr>
+                    <td><strong>{{ t.title }}</strong></td>
+                    <td>{{ t.trainer_name }}</td>
+                    <td>
+                        <span class="badge">
+                            {{ t.duration }} days
+                        </span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="empty">
+                        No trainings available
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

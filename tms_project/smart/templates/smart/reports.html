@@ -1,0 +1,21 @@
+{% extends "base_dashboard.html" %}
+{% block content %}
+
+<h2>Reports</h2>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Date</th>
+    </tr>
+
+    {% for r in reports %}
+    <tr>
+        <td>{{ r.title }}</td>
+        <td>{{ r.created_at }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

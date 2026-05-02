@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TMS | Contact</title>
+
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    margin:0;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    color: white;
+}
+
+/* HEADER */
+header {
+    background: rgba(0,0,0,0.7);
+    padding: 15px;
+}
+
+nav ul {
+    text-align:right;
+}
+
+nav ul li {
+    display:inline-block;
+    margin:0 10px;
+}
+
+nav ul li a {
+    color:white;
+    text-decoration:none;
+}
+
+/* LOGO */
+.logo-img{
+    height:70px;
+}
+
+/* HERO IMAGE */
+.contact-hero {
+    height: 250px;
+    background: url("https://images.unsplash.com/photo-1521791136064-7986c2920216") no-repeat center/cover;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+.contact-hero h1{
+    background: rgba(0,0,0,0.6);
+    padding:10px 20px;
+    border-radius:10px;
+}
+
+/* SECTION */
+#contact {
+    padding: 40px 20px;
+}
+
+/* LAYOUT */
+.row {
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+/* BOX */
+.contact-box {
+    background:white;
+    color:black;
+    padding:20px;
+    border-radius:15px;
+    flex:1;
+    min-width:300px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* FORM */
+input, textarea {
+    width:100%;
+    padding:20px;
+    margin:10px 0;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+button {
+    background:#667eea;
+    color:white;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#22c55e;
+}
+
+/* IMAGE CARD */
+.contact-image {
+    margin-top:20px;
+    text-align:center;
+}
+
+.contact-image img{
+    width:100%;
+    border-radius:20px;
+}
+
+/* MAP */
+.map {
+    margin-top:30px;
+}
+
+/* FOOTER */
+footer {
+    text-align:center;
+    margin-top:40px;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    nav ul {
+        text-align:center;
+    }
+
+    nav ul li {
+        display:block;
+        margin:5px 0;
+    }
+
+    .contact-hero {
+        height:180px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<div class="container">
+
+<img src="img/logo.png" class="logo-img">
+
+<nav><ul>
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li class="current"><a href="{% url 'about' %}">About</a></li>
+    <li><a href="{% url 'features' %}">Features</a></li>
+    <li><a href="{% url 'services' %}">Services</a></li>
+    <li><a href="{% url 'contact' %}">Contact</a></li>
+    <li><a href="{% url 'login' %}">Login</a></li>
+    <li><a href="{% url 'register' %}">Register</a></li>
+</ul>
+</nav>
+
+</div>
+</header>
+
+<!-- 🔥 HERO IMAGE -->
+<section class="contact-hero">
+    <h1>Contact Us 📞</h1>
+</section>
+
+<section id="contact">
+<div class="container">
+
+<div class="row">
+
+    <!-- CONTACT INFO -->
+    <div class="contact-box">
+        <h3>📧 Contact Info</h3>
+       <p>Email: <span id="contactEmail">amerdevkar23@gmail.com</span></p>
+<p>Phone: <span id="contactPhone">7620528222</span></p>        <p>Location:Builing, Kandre, s Residency, B1, Isbavi, Pandharpur, Maharashtra 413304</p>
+
+        <!-- IMAGE -->
+        <div class="contact-image">
+            <img src="https://images.unsplash.com/photo-1551434678-e076c223a692">
+        </div>
+    </div>
+
+    <!-- FORM -->
+<form onsubmit="return false;">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
+    <textarea id="message" rows="5" placeholder="Your Message"></textarea>
+
+    <!-- 🔥 BUTTONS -->
+    <button onclick="sendEmail()">Send Email 📧</button>
+    <button type="button" onclick="sendWhatsApp()" style="background:#25D366;margin-top:10px;">
+        Send WhatsApp 💬
+    </button>
+</form>
+        <!-- IMAGE -->
+        <div class="contact-image">
+            <img src="https://images.unsplash.com/photo-1556745757-8d76bdb6984b">
+        </div>
+    </div>
+
+</div>
+
+<!-- MAP -->
+<div class="map">
+    <h3 style="text-align:center;">📍 Our Location</h3>
+
+    <iframe
+    src="https://www.google.com/maps?q=Greentin+Solutions+Pvt+Ltd+Kandre+Residency+Isbavi+Pandharpur+Maharashtra+413304&output=embed"
+    width="100%"
+    height="300"
+    style="border:0; border-radius:15px;">
+    </iframe>
+</div>
+</div>
+</section>
+
+<footer>
+<p>TMS © 2026</p>
+</footer>
+
+<script>
+// 📧 EMAIL FUNCTION
+function sendEmail(){
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+  let message = document.getElementById("message").value;
+
+  let contactEmail = document.getElementById("contactEmail").innerText;
+
+  if(name=="" || email=="" || message==""){
+    alert("Please fill all fields ❌");
+    return;
+  }
+
+  let subject = "New Contact Message from " + name;
+  let body = "Name: " + name + "%0D%0A"
+           + "Email: " + email + "%0D%0A"
+           + "Message: " + message;
+
+  // 🔥 Dynamic email
+  window.location.href = "mailto:" + contactEmail + "?subject=" + subject + "&body=" + body;
+}
+
+
+// 💬 WHATSAPP FUNCTION
+function sendWhatsApp(){
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+  let message = document.getElementById("message").value;
+
+  let phone = document.getElementById("contactPhone").innerText;
+
+  if(name=="" || email=="" || message==""){
+    alert("Please fill all fields ❌");
+    return;
+  }
+
+  let text = "Hello, I am " + name +
+             "%0AEmail: " + email +
+             "%0AMessage: " + message;
+
+  // 🔥 Dynamic phone
+  window.open("https://wa.me/" + phone + "?text=" + text, "_blank");
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+
+<div class="notification-page">
+
+    <div class="notify-header">
+        <h1>Notifications</h1>
+        <p>{{ unread_count }} unread notifications</p>
+    </div>
+
+    <div class="notify-tabs">
+        <a href="?filter=all" class="{% if active_tab == 'all' %}active{% endif %}">All</a>
+        <a href="?filter=unread" class="{% if active_tab == 'unread' %}active{% endif %}">
+            Unread ({{ unread_count }})
+        </a>
+        <a href="?filter=important" class="{% if active_tab == 'important' %}active{% endif %}">
+            Important
+        </a>
+    </div>
+
+    <div class="notify-list">
+
+        {% for n in notifications %}
+
+        <div class="notify-card">
+
+            <div class="notify-icon
+                {% if n.notification_type == 'warning' %}warning
+                {% elif n.notification_type == 'success' %}success
+                {% else %}info{% endif %}">
+
+                {% if n.notification_type == 'warning' %}
+                    !
+                {% elif n.notification_type == 'success' %}
+                    ✓
+                {% else %}
+                    i
+                {% endif %}
+
+            </div>
+
+            <div class="notify-content">
+                <h4>{{ n.title }}</h4>
+                <p>{{ n.message }}</p>
+                <span>{{ n.created_at|timesince }} ago</span>
+            </div>
+
+        </div>
+
+        {% empty %}
+            <div class="empty-box">No notifications available</div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<style>
+.notification-page{
+    padding:30px;
+    background:#f5f7fb;
+    min-height:100vh;
+    font-family:Arial;
+}
+
+.notify-header h1{
+    font-size:34px;
+}
+
+.notify-tabs{
+    display:flex;
+    gap:10px;
+    margin:20px 0;
+}
+
+.notify-tabs a{
+    padding:8px 14px;
+    border-radius:8px;
+    text-decoration:none;
+    background:#fff;
+}
+
+.notify-tabs a.active{
+    background:#14b8a6;
+    color:#fff;
+}
+
+.notify-card{
+    background:#fff;
+    padding:15px;
+    margin-bottom:12px;
+    border-radius:10px;
+    display:flex;
+    gap:12px;
+}
+
+.notify-icon{
+    width:35px;
+    height:35px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+}
+
+.warning{ background:#fff3cd; color:#f97316; }
+.success{ background:#dcfce7; color:#16a34a; }
+.info{ background:#dbeafe; color:#2563eb; }
+
+</style>
+
+{% endblock %}

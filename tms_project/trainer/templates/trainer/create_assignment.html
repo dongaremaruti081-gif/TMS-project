@@ -1,0 +1,42 @@
+<h2>Create Assignment</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Title</label>
+    <input type="text" name="title" required>
+
+    <label>Course</label>
+    <select name="course">
+        {% for c in courses %}
+            <option value="{{ c.id }}">{{ c.title }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Due Date</label>
+    <input type="date" name="due_date">
+
+    <hr>
+
+    <h4>Questions</h4>
+
+    <div id="questions">
+        <input type="text" name="questions[]" placeholder="Enter question">
+    </div>
+
+    <button type="button" onclick="addQuestion()">+ Add Question</button>
+
+    <br><br>
+    <button type="submit">Create Assignment</button>
+</form>
+
+<script>
+function addQuestion(){
+    let div = document.getElementById("questions");
+    let input = document.createElement("input");
+    input.type = "text";
+    input.name = "questions[]";
+    input.placeholder = "Enter question";
+    div.appendChild(input);
+}
+</script>

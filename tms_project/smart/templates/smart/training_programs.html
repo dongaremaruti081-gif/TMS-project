@@ -1,0 +1,164 @@
+{% extends "base_dashboard.html" %}
+{% block content %}
+
+<style>
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.search-box{
+    width:300px;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.btn{
+    background:#2563eb;
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    text-decoration:none;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+/* CARD */
+.card{
+    background:#fff;
+    border-radius:16px;
+    padding:20px;
+    border:1px solid #e5e7eb;
+}
+
+/* HEADER */
+.card-header{
+    display:flex;
+    justify-content:space-between;
+}
+
+.badge{
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+}
+
+.active{ background:#dcfce7; color:#15803d; }
+.upcoming{ background:#fef3c7; color:#b45309; }
+
+/* TEXT */
+.category{
+    color:#2563eb;
+    font-size:13px;
+}
+
+.small{
+    font-size:13px;
+    color:#6b7280;
+    margin-top:5px;
+}
+
+/* PROGRESS */
+.progress-bar{
+    height:8px;
+    background:#e5e7eb;
+    border-radius:10px;
+    margin-top:5px;
+}
+
+.progress{
+    height:100%;
+    border-radius:10px;
+}
+.view-btn{
+    margin-top:15px;
+    width:100%;
+    padding:10px;
+    background:#f3f4f6;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    display:block;
+    text-align:center;
+    text-decoration:none;   /* ✅ remove underline */
+    color:#000;             /* optional: set text color */
+}
+</style>
+
+<!-- TOP -->
+<div class="top-bar">
+    <h2>Training Programs</h2>
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-bottom:20px;">
+    <input type="text" placeholder="🔍 Search programs..." class="search-box">
+<a href="{% url 'add_program' %}" class="btn">+ Create Program</a></div>
+
+<!-- CARDS -->
+<div class="grid">
+
+{% for p in programs %}
+<div class="card">
+
+   <div class="card-header">
+
+    <b>{{ p.name }}</b>
+
+    <div style="display:flex; align-items:center; gap:10px;">
+
+        {% if p.status == "Active" %}
+            <span class="badge active">Active</span>
+        {% else %}
+            <span class="badge upcoming">Upcoming</span>
+        {% endif %}
+
+        <!-- ACTIONS (Same as Trainee) -->
+        <div class="actions">
+            <a href="{% url 'edit_program' p.id %}">✏️</a>
+            <a href="{% url 'delete_program' p.id %}" style="color:red;"
+               onclick="return confirm('Delete this program?');">
+               🗑️
+            </a>
+        </div>
+
+    </div>
+
+</div>
+    <div class="category">{{ p.category }}</div>
+
+    <div class="small">⏱ {{ p.duration }}</div>
+    <div class="small">📅 Starts {{ p.start_date }}</div>
+    <div class="small">👥 {{ p.enrolled }} / {{ p.capacity }} enrolled</div>
+
+    <!-- PROGRESS -->
+    <div class="small">Capacity <span style="float:right">{{ p.percent }}%</span></div>
+
+    <div class="progress-bar">
+        <div class="progress"
+             style="width:{{ p.percent }}%;
+             {% if p.percent == 100 %}
+                background:red;
+             {% else %}
+                background:#2563eb;
+             {% endif %}">
+        </div>
+    </div>
+
+    <!-- BUTTON -->
+<a href="{% url 'program_detail' p.id %}" class="view-btn" style="text-align:center; display:block;">
+    View Details
+</a>
+</div>
+{% endfor %}
+
+</div>
+
+{% endblock %}

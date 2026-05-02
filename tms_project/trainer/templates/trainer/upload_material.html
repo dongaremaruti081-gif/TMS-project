@@ -1,0 +1,147 @@
+{% extends "base_dashboard.html" %}
+{% block content %}
+
+<style>
+
+.top-bar{
+    margin-bottom:20px;
+}
+
+.title{
+    font-size:26px;
+    font-weight:600;
+    color:#111827;
+}
+
+.subtitle{
+    color:#6b7280;
+    font-size:14px;
+    margin-top:5px;
+}
+
+/* CARD */
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:25px;
+    max-width:800px;
+}
+
+/* FORM */
+label{
+    font-weight:600;
+    font-size:13px;
+    color:#374151;
+    display:block;
+    margin-top:14px;
+}
+
+input, textarea, select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    margin-top:6px;
+    font-size:14px;
+    outline:none;
+    background:white;
+}
+
+input:focus, textarea:focus, select:focus{
+    border-color:#4b5cff;
+    box-shadow:0 0 0 3px rgba(75,92,255,0.1);
+}
+
+/* FILE NAME */
+.file-name{
+    font-size:12px;
+    color:#6b7280;
+    margin-top:5px;
+}
+
+/* BUTTON */
+.btn{
+    background:#4b5cff;
+    color:white;
+    padding:12px 18px;
+    border:none;
+    border-radius:8px;
+    margin-top:20px;
+    cursor:pointer;
+    font-weight:600;
+    width:100%;
+}
+
+.btn:hover{
+    background:#3a4bdc;
+}
+
+/* SUCCESS */
+.success{
+    background:#d1fae5;
+    color:#065f46;
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:10px;
+}
+
+</style>
+
+<!-- HEADER -->
+<div class="top-bar">
+    <div class="title">📤 Upload Material</div>
+    <div class="subtitle">Upload and manage training resources</div>
+</div>
+
+<!-- CARD -->
+<div class="card">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- TITLE -->
+        <label>Title</label>
+        <input type="text" name="title" placeholder="Enter material title" required>
+
+        <!-- DESCRIPTION -->
+        <label>Description</label>
+        <textarea name="description" rows="4" placeholder="Write short description..."></textarea>
+
+        <!-- ✅ COURSE SELECT -->
+        <label>Select Course</label>
+        <select name="training" required>
+            <option value="">-- Select Course --</option>
+            {% for c in courses %}
+                <option value="{{ c.id }}">{{ c.title }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- FILE -->
+        <label>Upload File</label>
+        <input type="file" name="file" required onchange="showFileName(this)">
+
+        <div id="fileName" class="file-name"></div>
+
+        <!-- BUTTON -->
+        <button type="submit" class="btn">⬆ Upload Material</button>
+
+    </form>
+
+</div>
+
+<script>
+function showFileName(input){
+    if(input.files.length > 0){
+        document.getElementById("fileName").innerText = "Selected: " + input.files[0].name;
+    }
+}
+</script>
+
+{% endblock %}
