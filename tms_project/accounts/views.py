@@ -6,20 +6,7 @@ from django.contrib.auth.decorators import login_required
 from dashboard.models import ActivityLog
 from django.views.decorators.csrf import csrf_exempt
 from smart.models import TrainingProgram
-from django.http import JsonResponse
 
-def api_response(request, data, redirect_url=None):
-    """
-    If request is API (Postman / fetch), return JSON
-    else normal redirect/render
-    """
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.content_type == 'application/json':
-        return JsonResponse(data)
-
-    if redirect_url:
-        return redirect(redirect_url)
-
-    return JsonResponse(data)
 
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -63,7 +50,6 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from .models import CustomUser
 from django.http import JsonResponse
-
 @csrf_exempt
 def register_view(request):
     if request.method == "POST":
@@ -78,7 +64,7 @@ def register_view(request):
 
         errors = {}
 
-        # VALIDATIONS (same as your code)
+        # VALIDATIONS
         if not full_name:
             errors['full_name'] = "Full name is required"
 
@@ -116,14 +102,6 @@ def register_view(request):
 
         # ❌ ERROR CASE
         if errors:
-            # 👉 API CALL (Postman)
-            if request.headers.get('Accept') == 'application/json':
-                return JsonResponse({
-                    "status": "error",
-                    "errors": errors
-                }, status=400)
-
-            # 👉 Normal Browser
             return render(request, 'accounts/register.html', {
                 'errors': errors,
                 'data': request.POST
@@ -150,21 +128,10 @@ def register_view(request):
                 is_read=False
             )
 
-        # ✅ SUCCESS RESPONSE
-        if request.headers.get('Accept') == 'application/json':
-            return JsonResponse({
-                "status": "success",
-                "message": "User registered successfully",
-                "data": {
-                    "username": user.username,
-                    "role": user.role,
-                    "email": user.email
-                }
-            })
-
         return redirect('login')
 
     return render(request, 'accounts/register.html')
+
 
 @csrf_exempt
 def login_view(request):
@@ -192,27 +159,9 @@ def login_view(request):
                 notification_type="info"
             )
 
-            # ✅ API RESPONSE
-            if request.headers.get('Accept') == 'application/json':
-                return JsonResponse({
-                    "status": "success",
-                    "message": "Login successful",
-                    "data": {
-                        "username": user.username,
-                        "role": user.role
-                    }
-                })
-
             return redirect('dashboard_redirect')
 
         else:
-            # ❌ API ERROR
-            if request.headers.get('Accept') == 'application/json':
-                return JsonResponse({
-                    "status": "error",
-                    "message": "Invalid Credentials"
-                }, status=401)
-
             return render(request, 'accounts/login.html', {
                 'error': 'Invalid Credentials'
             })
@@ -264,7 +213,6 @@ def toggle_admin_status(request, id):
 
     messages.success(request, "Admin status updated")
     return redirect('manage_admins')
-
 @csrf_exempt
 @login_required
 def add_admin(request):
@@ -278,11 +226,10 @@ def add_admin(request):
 
         errors = {}
 
-        # 🔴 Full Name
+        # Validations
         if not full_name:
             errors['full_name'] = "Full name is required"
 
-        # 🔴 Username
         if not username:
             errors['username'] = "Username is required"
         elif len(username) < 4:
@@ -290,17 +237,14 @@ def add_admin(request):
         elif CustomUser.objects.filter(username=username).exists():
             errors['username'] = "Username already exists"
 
-        # 🔴 Email
         if not email:
             errors['email'] = "Email is required"
         elif CustomUser.objects.filter(email=email).exists():
             errors['email'] = "Email already exists"
 
-        # 🔴 Phone
         if not phone or not phone.isdigit() or len(phone) != 10:
             errors['phone'] = "Enter valid 10 digit phone"
 
-        # 🔴 Password
         if not password:
             errors['password'] = "Password is required"
         elif len(password) < 6:
@@ -308,23 +252,9 @@ def add_admin(request):
 
         # ❌ ERROR CASE
         if errors:
-            if request.headers.get('Accept') == 'application/json':
-                return JsonResponse({
-                    "status": "error",
-                    "message": "Validation failed",
-                    "data": None,
-                    "errors": {
-                        "full_name": errors.get('full_name'),
-                        "username": errors.get('username'),
-                        "email": errors.get('email'),
-                        "phone": errors.get('phone'),
-                        "password": errors.get('password')
-                    }
-                }, status=400)
-
             return render(request, 'accounts/add_admin.html', {
-                'errors': errors,
-                'data': request.POST
+                "errors": errors,
+                "data": request.POST
             })
 
         # ✅ CREATE ADMIN
@@ -341,21 +271,6 @@ def add_admin(request):
             user=request.user,
             action=f"Added adminapp: {username}"
         )
-
-        # ✅ SUCCESS RESPONSE
-        if request.headers.get('Accept') == 'application/json':
-            return JsonResponse({
-                "status": "success",
-                "message": "Admin created successfully",
-                "data": {
-                    "full_name": user.full_name,
-                    "username": user.username,
-                    "email": user.email,
-                    "phone": user.phone,
-                    "role": user.role
-                },
-                "errors": None
-            })
 
         return redirect('manage_admins')
 
@@ -384,12 +299,14 @@ def edit_admin(request, id):
         if not phone or not phone.isdigit() or len(phone) != 10:
             errors["phone"] = "Enter valid 10 digit phone"
 
+        # ❌ ERROR CASE
         if errors:
-            return JsonResponse({
-                "status": "error",
-                "errors": errors
-            }, status=400)
+            return render(request, 'accounts/edit_admin.html', {
+                "errors": errors,
+                "admin": admin
+            })
 
+        # ✅ UPDATE
         admin.full_name = full_name
         admin.email = email
         admin.phone = phone
@@ -400,22 +317,11 @@ def edit_admin(request, id):
             action=f"Edited adminapp: {admin.username}"
         )
 
-        return JsonResponse({
-            "status": "success",
-            "message": "Admin updated successfully",
-            "data": {
-                "id": admin.id,
-                "username": admin.username,
-                "email": admin.email,
-                "full_name": admin.full_name,
-                "phone": admin.phone
-            }
-        })
+        return redirect('manage_admins')
 
-    return JsonResponse({
-        "status": "error",
-        "message": "Only POST method allowed"
-    }, status=405)
+    return render(request, 'accounts/edit_admin.html', {
+        "admin": admin
+    })
 
 
 # ❌ Delete Admin
@@ -649,10 +555,7 @@ from django.views.decorators.http import require_POST
 @require_POST
 def logout_view(request):
     logout(request)
-    return JsonResponse({
-        "status": "success",
-        "message": "Logout successful"
-    })
+    return redirect('login')
 
 
 from django.shortcuts import render, redirect, get_object_or_404

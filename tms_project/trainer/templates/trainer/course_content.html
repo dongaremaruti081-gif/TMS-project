@@ -1,0 +1,130 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+
+<style>
+.container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.module {
+    margin-bottom: 20px;
+}
+
+.lesson {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #eee;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.progress-bar div {
+    height: 8px;
+    background: #6366f1;
+    border-radius: 10px;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.done {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.pending {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+button {
+    padding: 5px 10px;
+    border: none;
+    background: #6366f1;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+</style>
+
+<h2>{{ course.title }}</h2>
+<p style="color:gray;">{{ course.description }}</p>
+
+<div class="container">
+
+    <!-- LEFT: Modules & Lessons -->
+    <div class="card">
+
+        <h3>Course Content</h3>
+
+        {% for module in modules %}
+        <div class="module">
+            <h4>{{ module.title }}</h4>
+
+            {% for lesson in module.lessons.all %}
+            <div class="lesson">
+
+                <div>
+                    <strong>{{ lesson.title }}</strong>
+                    <small style="color:gray;"> ({{ lesson.duration }})</small>
+                </div>
+
+                <div>
+                    {% if lesson.lessonprogress_set.filter(user=request.user, completed=True).exists %}
+                        <span class="badge done">Completed</span>
+                    {% else %}
+                        <a href="{% url 'mark_complete' lesson.id %}">
+                            <button>Mark Done</button>
+                        </a>
+                    {% endif %}
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- RIGHT: Progress -->
+    <div class="card">
+
+        <h3>Your Progress</h3>
+
+        <h2>{{ progress }}%</h2>
+
+        <div class="progress-bar">
+            <div style="width: {{ progress }}%"></div>
+        </div>
+
+        <p style="margin-top:10px;">
+            {{ completed_lessons }} / {{ total_lessons }} lessons completed
+        </p>
+
+        <p>⏱ Time Spent: {{ time_spent }}</p>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -84,10 +84,36 @@ def course_content(request, course_id):
 # ===========================
 # ✅ MARK LESSON COMPLETE
 # ===========================
+
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+
+from smart.models import Enrollment
+from .models import Lesson, LessonProgress
+
+
+# 🔥 reusable function
+def calculate_progress(user, course):
+    total = Lesson.objects.filter(module__course=course).count()
+
+    completed = LessonProgress.objects.filter(
+        user=user,
+        lesson__module__course=course,
+        completed=True
+    ).count()
+
+    return int((completed / total) * 100) if total else 0
+
+
+# =========================
+# ✅ MARK COMPLETE (FINAL)
+# =========================
 @login_required
 def mark_complete(request, lesson_id):
     lesson = get_object_or_404(Lesson, id=lesson_id)
 
+    # ✅ mark lesson complete
     LessonProgress.objects.update_or_create(
         user=request.user,
         lesson=lesson,
@@ -97,9 +123,28 @@ def mark_complete(request, lesson_id):
         }
     )
 
-    return redirect('course_content', course_id=lesson.module.course.id)
+    course = lesson.module.course
 
+    # 🔥 calculate progress (function वापर)
+    progress = calculate_progress(request.user, course)
 
+    # 🔥 update enrollment safely
+    enrollment, created = Enrollment.objects.get_or_create(
+        trainee=request.user,
+        training=course
+    )
+
+    enrollment.progress = progress
+
+    # ✅ auto status
+    if progress == 100:
+        enrollment.status = "Completed"
+    else:
+        enrollment.status = "In Progress"
+
+    enrollment.save()
+
+    return redirect('course_content', course_id=course.id)
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Assignment
@@ -180,7 +225,13 @@ def my_progress(request):
     # =========================
     enrollments = Enrollment.objects.filter(trainee=user)
 
-    avg_progress = enrollments.aggregate(avg=Avg('progress'))['avg'] or 0
+    progress_list = []
+
+    for e in enrollments:
+        p = calculate_progress(user, e.training)
+        progress_list.append(p)
+
+    avg_progress = sum(progress_list) / len(progress_list) if progress_list else 0
     total_courses = enrollments.count()
 
     # =========================

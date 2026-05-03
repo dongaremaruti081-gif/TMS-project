@@ -18,6 +18,7 @@
 
 .input-group{
     margin-bottom:15px;
+    position: relative;
 }
 
 .input-group label{
@@ -31,6 +32,16 @@
     padding:12px;
     border:1px solid #ddd;
     border-radius:10px;
+}
+
+/* 👁 Eye icon */
+.eye-icon{
+    position:absolute;
+    right:12px;
+    top:38px;
+    cursor:pointer;
+    font-size:14px;
+    color:#555;
 }
 
 .btn{
@@ -67,32 +78,80 @@
         {% endfor %}
     {% endif %}
 
-    <form method="POST">
+    <form method="POST" onsubmit="return validateForm()">
         {% csrf_token %}
 
         <div class="input-group">
             <label>Full Name</label>
-            <input type="text" name="full_name" required>
+            <input type="text" name="full_name" id="full_name" required>
         </div>
 
         <div class="input-group">
             <label>Username</label>
-            <input type="text" name="username" required>
+            <input type="text" name="username" id="username" required>
         </div>
 
         <div class="input-group">
             <label>Email</label>
-            <input type="email" name="email" required>
+            <input type="email" name="email" id="email" required>
         </div>
 
         <div class="input-group">
             <label>Password</label>
-            <input type="password" name="password" required>
+            <input type="password" name="password" id="password" required>
+            <span class="eye-icon" onclick="togglePassword()">👁️</span>
         </div>
 
         <button class="btn">Create Trainee</button>
     </form>
 
 </div>
+
+<script>
+// 🧹 Trim inputs (except password)
+function trimInputs() {
+    document.getElementById("full_name").value =
+        document.getElementById("full_name").value.trim();
+
+    document.getElementById("username").value =
+        document.getElementById("username").value.trim();
+
+    document.getElementById("email").value =
+        document.getElementById("email").value.trim();
+}
+
+// 👁 Toggle password
+function togglePassword() {
+    let pass = document.getElementById("password");
+    pass.type = pass.type === "password" ? "text" : "password";
+}
+
+// 📧 Email validation
+function validateForm() {
+    trimInputs();
+
+    let email = document.getElementById("email").value;
+    let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+        alert("Enter valid email ❌");
+        return false;
+    }
+
+    return true;
+}
+
+// 🚫 Block space & tab in password
+document.getElementById("password").addEventListener("keydown", function(e) {
+    if (e.key === " " || e.key === "Tab") {
+        e.preventDefault();
+    }
+});
+
+// 🚫 Remove pasted spaces
+document.getElementById("password").addEventListener("input", function() {
+    this.value = this.value.replace(/\s/g, '');
+});
+</script>
 
 {% endblock %}
