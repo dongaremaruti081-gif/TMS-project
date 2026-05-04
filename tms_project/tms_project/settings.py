@@ -28,11 +28,17 @@ import os
 
 
 ALLOWED_HOSTS = [
-    "127.0.0.1",
+    "tms-project-jq42.onrender.com",
     "localhost",
-    "tms-project-jq42.onrender.com"
+    "127.0.0.1"
 ]
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://tms-project-jq42.onrender.com"
+]
 # Application definition
 
 INSTALLED_APPS = [
