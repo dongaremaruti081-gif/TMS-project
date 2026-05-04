@@ -99,8 +99,10 @@ DATABASES = {
         'NAME': os.getenv("MYSQLDATABASE"),
         'USER': os.getenv("MYSQLUSER"),
         'PASSWORD': os.getenv("MYSQLPASSWORD"),
-        'HOST': os.getenv("MYSQLHOST"),
-        'PORT': os.getenv("MYSQLPORT", "3306"),
+
+        # 🔥 IMPORTANT FIX HERE
+        'HOST': os.getenv("MYSQLHOST", "tramway.proxy.rlwy.net"),
+        'PORT': os.getenv("MYSQLPORT", "28959"),
     }
 }
 # Password validation
@@ -158,7 +160,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_URL = '/static/'
+
 
 STATICFILES_DIRS = [
     BASE_DIR / "your_app/static",
