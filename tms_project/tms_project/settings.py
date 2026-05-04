@@ -99,10 +99,8 @@ DATABASES = {
         'NAME': os.getenv("MYSQLDATABASE"),
         'USER': os.getenv("MYSQLUSER"),
         'PASSWORD': os.getenv("MYSQLPASSWORD"),
-
-        # 🔥 IMPORTANT FIX HERE
-        'HOST': os.getenv("MYSQLHOST", "tramway.proxy.rlwy.net"),
-        'PORT': os.getenv("MYSQLPORT", "28959"),
+        'HOST': os.getenv("MYSQLHOST"),
+        'PORT': os.getenv("MYSQLPORT"),
     }
 }
 # Password validation
