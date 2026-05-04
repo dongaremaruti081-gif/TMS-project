@@ -1,0 +1,1 @@
+web: gunicorn tms_project.wsgi
