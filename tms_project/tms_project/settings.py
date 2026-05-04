@@ -83,16 +83,15 @@ WSGI_APPLICATION = 'tms_project.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-import os
+# https://docs.djangoproject.com/en/6.0/ref/settings/#data
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv("MYSQLDATABASE"),
         'USER': os.getenv("MYSQLUSER"),
         'PASSWORD': os.getenv("MYSQLPASSWORD"),
-        'HOST': os.getenv("MYSQLHOST_PUBLIC", "tramway.proxy.rlwy.net"),
-        'PORT': os.getenv("MYSQLPORT", "28959"),
+        'HOST': os.getenv("MYSQLHOST"),
+        'PORT': os.getenv("MYSQLPORT", "3306"),
     }
 }
 # Password validation
@@ -132,9 +131,6 @@ USE_TZ = False
 STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-import os
-
-STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
@@ -148,9 +144,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-import os
 
-MEDIA_URL = '/media/'
+
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
