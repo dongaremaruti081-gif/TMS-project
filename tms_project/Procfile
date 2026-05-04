@@ -1,1 +1,1 @@
-web: gunicorn tms_project.wsgi
+web: gunicorn tms_project.wsgi:application
