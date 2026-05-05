@@ -652,7 +652,7 @@ def employee_management(request):
 # ======================================================
 # ADD EMPLOYEE
 # ======================================================
-@csrf_exempt
+""""@csrf_exempt
 @login_required
 def add_employee(request):
     if request.method == "POST":
@@ -681,6 +681,67 @@ def add_employee(request):
         )
 
         messages.success(request, "Employee Added Successfully ✅")
+
+    return redirect('employee_management')"""
+
+@csrf_exempt
+@login_required
+def add_employee(request):
+    if request.method == "POST":
+
+        full_name = request.POST.get('full_name', '').strip()
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        password = request.POST.get('password', '').strip()
+        role = request.POST.get('role', '').strip()
+        department = request.POST.get('department', '').strip()
+
+        # ================= VALIDATIONS =================
+
+        if not full_name:
+            messages.error(request, "Full name required ❌")
+            return redirect('employee_management')
+
+        if not username or not re.match("^[A-Za-z]+$", username):
+            messages.error(request, "Invalid username (only letters allowed) ❌")
+            return redirect('employee_management')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists ❌")
+            return redirect('employee_management')
+
+        if email and User.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists ❌")
+            return redirect('employee_management')
+
+        if not phone.isdigit() or len(phone) != 10:
+            messages.error(request, "Phone must be 10 digits ❌")
+            return redirect('employee_management')
+
+        if not password or len(password) < 6:
+            messages.error(request, "Password must be at least 6 characters ❌")
+            return redirect('employee_management')
+
+        if role not in ['Trainer', 'Trainee']:
+            messages.error(request, "Invalid role ❌")
+            return redirect('employee_management')
+
+        # ================= CREATE USER =================
+
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            full_name=full_name,
+            email=email,
+            phone=phone,
+            department=department
+        )
+
+        user.role = role   # 🔥 IMPORTANT FIX
+        user.save()
+
+        messages.success(request, f"{role} added successfully ✅")
 
     return redirect('employee_management')
 
