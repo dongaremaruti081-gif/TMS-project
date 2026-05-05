@@ -366,6 +366,7 @@ from trainer.models import Material   # 🔥 import
 
 @login_required
 @login_required
+@login_required
 def materials(request):
     user = request.user
 
@@ -373,8 +374,9 @@ def materials(request):
         trainee=user
     ).values_list('training_id', flat=True)
 
-    material = Material.objects.filter(
-        training_id__in=list(enrolled_courses)
+    materials = Material.objects.filter(
+        training__id__in=enrolled_courses
+
     )
 
     return render(request, "trainee/materials.html", {
