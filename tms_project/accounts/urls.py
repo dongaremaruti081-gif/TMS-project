@@ -14,20 +14,15 @@ from .views import reports_analytics
 
 
 urlpatterns = [
+    # Static Pages
     path('about/', views.about, name='about'),
-    path('blog/', views.blog, name='blog'),
-    path('careers/', views.careers, name='careers'),
-    path('contact/', views.contact, name='contact'),
-    path('courses/', views.courses, name='courses'),
-
-    path('facebook/', views.facebook, name='facebook'),
-    path('faq/', views.faq, name='faq'),
     path('features/', views.features, name='features'),
-    path('linkedin/', views.linkedin, name='linkedin'),
-
-
-
     path('services/', views.services, name='services'),
+    path('contact/', views.contact, name='contact'),
+
+    # Auth Pages
+    path('login/', views.login_view, name='login'),
+    path('register/', views.register_view, name='register'),
 
     path('', home, name='home'),              # 🏠 Home
     path('login/', login_view, name='login'), # 🔐 Login
