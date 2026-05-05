@@ -26,12 +26,12 @@ def my_courses(request):
 
         course_data.append({
             "id": program.id,
-            "title": program.title,
-            "instructor": "Admin / Manager",
-            "duration": program.duration,
-            "students": program.enrolled_count(),
+            "title": program.title if hasattr(program, "title") else program.name,
+            "instructor": "Admin",
+            "duration": getattr(program, "duration", 0),
+            "students": getattr(program, "enrolled_count", lambda: 0)(),
             "rating": 4.8,
-            "progress": enroll.progress,
+            "progress": enroll.progress if hasattr(enroll, "progress") else 0,
             "status": enroll.status
         })
 
@@ -363,16 +363,17 @@ def view_assignment(request, id):
     })
 
 from trainer.models import Material   # 🔥 import
+
 @login_required
 def materials(request):
     user = request.user
 
     enrolled_courses = Enrollment.objects.filter(
-        trainee_id=user.id
+        trainee=user
     ).values_list('training_id', flat=True)
 
     materials = Material.objects.filter(
-        training_id__in=list(enrolled_courses)
+        training_id__in=enrolled_courses
     )
 
     return render(request, "trainee/materials.html", {
