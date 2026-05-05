@@ -796,7 +796,6 @@ def attendance_view(request):
         status = request.POST.get('status')
 
         if not (employee_id and training_id and date and status):
-            messages.error(request, "All fields are required ❌")
             return redirect('attendance')
 
         if Attendance.objects.filter(
@@ -817,7 +816,6 @@ def attendance_view(request):
             status=status
         )
 
-        messages.success(request, "Attendance marked successfully ✅")
         return redirect('attendance')
 
     records = Attendance.objects.select_related('employee', 'training').order_by('-date')
