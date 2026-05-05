@@ -682,15 +682,10 @@ def add_employee(request):
         messages.success(request, "Employee Added Successfully ✅")
 
     return redirect('employee_management')"""
-from accounts.models import CustomUser
-from django.contrib import messages
-from django.shortcuts import redirect
-from django.contrib.auth.decorators import login_required
-import re
 
-@login_required   # ❌ csrf_exempt काढलं
+@csrf_exempt
+@login_required
 def add_employee(request):
-
     if request.method == "POST":
 
         full_name = request.POST.get('full_name', '').strip()
@@ -708,14 +703,14 @@ def add_employee(request):
             return redirect('employee_management')
 
         if not username or not re.match("^[A-Za-z]+$", username):
-            messages.error(request, "Invalid username ❌")
+            messages.error(request, "Invalid username (only letters allowed) ❌")
             return redirect('employee_management')
 
-        if CustomUser.objects.filter(username=username).exists():
+        if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists ❌")
             return redirect('employee_management')
 
-        if email and CustomUser.objects.filter(email=email).exists():
+        if email and User.objects.filter(email=email).exists():
             messages.error(request, "Email already exists ❌")
             return redirect('employee_management')
 
@@ -733,18 +728,16 @@ def add_employee(request):
 
         # ================= CREATE USER =================
 
-        user = CustomUser.objects.create_user(
+        user = User.objects.create_user(
             username=username,
             password=password,
-            email=email
+            full_name=full_name,
+            email=email,
+            phone=phone,
+            department=department
         )
 
-        # extra fields assign
-        user.full_name = full_name
-        user.phone = phone
-        user.department = department
-        user.role = role
-
+        user.role = role   # 🔥 IMPORTANT FIX
         user.save()
 
         messages.success(request, f"{role} added successfully ✅")
