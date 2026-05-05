@@ -5,162 +5,451 @@
 <title>TMS | About</title>
 
 <link rel="stylesheet" href="./css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg,#667eea,#764ba2);
     color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
 }
 
-/* Header */
 header {
-    background: rgba(0,0,0,0.7);
-    padding: 15px;
+    background: rgba(15,23,42,0.95);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+}
+
+.header-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 12px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-img {
+    height: 80px;
+    width: auto;
+    transition: all 0.3s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 nav ul li a {
     color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 12px 18px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    display: block;
 }
 
-/* Logo */
-.logo-img{
-    height:90px;
-    vertical-align: middle;
-    margin-right:30px;
+nav ul li a:hover,
+nav ul li.current a {
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(102,126,234,0.35);
 }
 
-/* HERO IMAGE */
+/* HERO */
 .hero {
-    height:300px;
-    background:url("https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1600&q=90") no-repeat center center/cover;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
+    height: 350px;
+    background: url("https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1600&q=90") no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: slideDown 0.8s ease;
 }
 
-.hero::before{
-    content:"";
-    position:absolute;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.6);
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
 }
 
-.hero h1{
-    position:relative;
-    z-index:1;
-    font-size:40px;
+.hero h1 {
+    position: relative;
+    z-index: 1;
+    font-size: 48px;
+    font-weight: 700;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    animation: fadeUp 1s ease;
 }
 
-/* Container */
 .container {
-    width: 80%;
+    width: 85%;
+    max-width: 1200px;
     margin: auto;
 }
 
-/* Cards */
 .card {
     background: white;
     color: black;
-    padding: 20px;
-    margin-top: 20px;
+    padding: 40px;
+    margin: 40px auto;
     border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    animation: slideUp 0.8s ease;
+    border-left: 5px solid #667eea;
 }
 
-/* IMAGE SECTION */
-.about-img{
-    text-align:center;
-    margin-top:20px;
+.card h1 {
+    color: #667eea;
+    margin-bottom: 25px;
+    font-size: 32px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.about-img img{
-    width:80%;
-    max-width:600px;
-    border-radius:15px;
-    box-shadow:0 10px 20px rgba(0,0,0,0.3);
+.card h2 {
+    color: #667eea;
+    margin-top: 30px;
+    margin-bottom: 15px;
 }
 
-/* List */
+.about-img {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.about-img img {
+    width: 90%;
+    max-width: 650px;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    transition: all 0.4s ease;
+    border: 3px solid #667eea;
+}
+
+.about-img img:hover {
+    transform: scale(1.03) translateY(-5px);
+}
+
 .card ul {
     list-style: none;
-    padding-left: 0;
-    line-height: 1.8;
+    line-height: 2.2;
+    margin: 30px 0;
 }
 
-/* Footer */
-footer {
+.card ul li {
+    font-size: 16px;
+    color: #333;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    transition: 0.3s ease;
+}
+
+.card ul li:hover {
+    padding-left: 10px;
+    color: #667eea;
+    background: rgba(102,126,234,0.05);
+}
+
+.card ul li:before {
+    content: "✓";
+    color: #ff9800;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.card p {
+    color: #555;
+    line-height: 1.9;
+    font-size: 16px;
+    margin: 15px 0;
+}
+
+.features-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin: 50px 0;
+}
+
+.feature-item {
+    background: rgba(255,255,255,0.1);
+    padding: 30px;
+    border-radius: 15px;
     text-align: center;
-    margin-top: 40px;
+    border: 2px solid rgba(255,255,255,0.2);
+    transition: all 0.4s ease;
+    backdrop-filter: blur(10px);
+}
+
+.feature-item:hover {
+    background: rgba(255,255,255,0.2);
+    border-color: #ff9800;
+    transform: translateY(-10px);
+}
+
+.feature-item h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #ffd700;
+}
+
+.feature-item p {
+    color: rgba(255,255,255,0.9);
+    line-height: 1.6;
+}
+
+/* FOOTER - SAME AS HOME PAGE */
+.footer {
+    background: #0f172a;
+    padding: 50px 20px;
+    margin-top: auto;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.3);
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto 30px;
+}
+
+.footer-col h3 {
+    color: #38bdf8;
+    font-size: 18px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #38bdf8;
+    padding-bottom: 10px;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-col ul li {
+    margin: 12px 0;
+}
+
+.footer-col ul li a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.footer-col ul li a:hover {
+    color: #38bdf8;
+    padding-left: 5px;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid #334155;
+    color: #94a3b8;
+}
+
+.footer-bottom p {
+    margin: 5px 0;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media(max-width:768px) {
+    header .header-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    nav ul li {
+        justify-content: center;
+    }
+
+    .hero {
+        height: 250px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .container {
+        width: 95%;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .card h1 {
+        font-size: 24px;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
 }
 </style>
-
 </head>
-
 <body>
 
 <header>
-<div class="container">
+    <div class="header-container">
+        <img src="company logo.png" class="logo-img" alt="TMS Logo">
 
-    <h1>
-        <img src="img/logo.png" class="logo-img">
-    </h1>
-
-    <nav><ul>
-    <li><a href="{% url 'home' %}">Home</a></li>
-    <li class="current"><a href="{% url 'about' %}">About</a></li>
-    <li><a href="{% url 'features' %}">Features</a></li>
-    <li><a href="{% url 'services' %}">Services</a></li>
-    <li><a href="{% url 'contact' %}">Contact</a></li>
-    <li><a href="{% url 'login' %}">Login</a></li>
-    <li><a href="{% url 'register' %}">Register</a></li>
-</ul>
-    </nav>
-
-</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li class="current"><a href="about.html">About</a></li>
+                <li><a href="features.html">Features</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="register.html">Register</a></li>
+            </ul>
+        </nav>
+    </div>
 </header>
 
-<!-- 🔥 HERO -->
 <section class="hero">
-<h1>About TMS</h1>
+    <h1>About TMS</h1>
 </section>
 
 <div class="container">
-
-    <!-- ✅ ABOUT CONTENT -->
     <div class="card">
-        <h1>About Training Management System</h1>
+        <h1>📚 About Training Management System</h1>
+        <p>Training Management System (TMS) is a smart web-based platform used to manage and organize training activities efficiently. It provides comprehensive solutions for organizations to streamline their training processes and enhance employee development.</p>
 
-        <p>
-            Training Management System (TMS) is a smart web-based platform used to manage and organize training activities efficiently.
-        </p>
-
-        <!-- 🔥 IMAGE -->
         <div class="about-img">
-            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=90">
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=90" alt="Training Management System">
         </div>
 
+        <h2>✨ Key Features & Benefits</h2>
         <ul>
-            <li>✔ Manage training programs and schedules easily</li>
-            <li>✔ Track student attendance automatically</li>
-            <li>✔ Store student and trainer details</li>
-            <li>✔ Generate certificates after course completion</li>
-            <li>✔ Provide role-based login (Admin, Trainer, Student)</li>
-            <li>✔ Analyze performance using reports and analytics</li>
-            <li>✔ Send notifications via email or SMS</li>
-            <li>✔ Reduce manual work and improve efficiency</li>
+            <li>Manage training programs and schedules easily</li>
+            <li>Track student attendance automatically</li>
+            <li>Store student and trainer details securely</li>
+            <li>Generate certificates after course completion</li>
+            <li>Provide role-based login (Admin, Trainer, Student)</li>
+            <li>Analyze performance using reports and analytics</li>
+            <li>Send notifications via email or SMS</li>
+            <li>Reduce manual work and improve efficiency</li>
         </ul>
 
-        <p>
-            This system helps organizations save time, improve productivity, and manage training processes in a simple and effective way.
-        </p>
+        <p>This system helps organizations save time, improve productivity, and manage training processes in a simple and effective way. With our user-friendly interface and powerful features, TMS is the perfect solution for modern training management needs.</p>
     </div>
 
+    <div class="features-section">
+        <div class="feature-item">
+            <h3>🚀 Fast & Reliable</h3>
+            <p>High-performance system with 99.9% uptime guarantee for uninterrupted service</p>
+        </div>
+        <div class="feature-item">
+            <h3>🔒 Secure & Safe</h3>
+            <p>Enterprise-grade security with encrypted data and secure user authentication</p>
+        </div>
+        <div class="feature-item">
+            <h3>📊 Smart Analytics</h3>
+            <p>Comprehensive reports and insights for data-driven decision making</p>
+        </div>
+        <div class="feature-item">
+            <h3>🎯 Easy to Use</h3>
+            <p>Intuitive interface that requires minimal training for users</p>
+        </div>
+    </div>
 </div>
 
-<footer>
-<p>TMS © 2026</p>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-col">
+            <h3>📚 Learn</h3>
+            <ul>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="linkedin.html">LinkedIn</a></li>
+                <li><a href="facebook.html">Facebook</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h3>🏢 Company</h3>
+            <ul>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="careers.html">Careers</a></li>
+                <li><a href="features.html">Features</a></li>
+                <li><a href="services.html">Services</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h3>💼 Support</h3>
+            <ul>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h3>🚀 Quick Links</h3>
+            <ul>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 TMS | Training Management System</p>
+        <p>Made with ❤️ for Better Training Management</p>
+    </div>
 </footer>
 
 </body>

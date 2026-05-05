@@ -7,18 +7,16 @@
 <style>
 body{
   margin:0;
-  font-family:Poppins;
+  font-family:Poppins, sans-serif;
   background:linear-gradient(135deg,#667eea,#764ba2);
   color:white;
 }
 
-/* HEADER */
 h1{
   text-align:center;
   margin-top:20px;
 }
 
-/* SEARCH */
 .search-box{
   text-align:center;
   margin:20px;
@@ -29,15 +27,14 @@ h1{
   width:250px;
   border:none;
   border-radius:20px;
+  outline:none;
 }
 
-/* CONTAINER */
 .container{
   width:90%;
   margin:auto;
 }
 
-/* BLOG CARD */
 .blog{
   display:flex;
   flex-wrap:wrap;
@@ -54,19 +51,16 @@ h1{
   transform:scale(1.02);
 }
 
-/* IMAGE */
 .blog img{
   width:300px;
   object-fit:cover;
 }
 
-/* CONTENT */
 .blog-content{
   padding:20px;
   flex:1;
 }
 
-/* TAG */
 .tag{
   display:inline-block;
   background:#22c55e;
@@ -76,29 +70,12 @@ h1{
   font-size:12px;
 }
 
-/* META */
 .meta{
   font-size:12px;
   color:#777;
   margin:5px 0;
 }
 
-/* BUTTON */
-.btn{
-  margin-top:10px;
-  padding:8px 15px;
-  background:#667eea;
-  color:white;
-  border:none;
-  border-radius:20px;
-  cursor:pointer;
-}
-
-.btn:hover{
-  background:#22c55e;
-}
-
-/* MOBILE */
 @media(max-width:768px){
   .blog{
     flex-direction:column;
@@ -115,201 +92,101 @@ h1{
 
 <h1>📰 Latest Blogs</h1>
 
-<!-- 🔍 SEARCH -->
 <div class="search-box">
-<input type="text" placeholder="Search blog...">
+  <input type="text" placeholder="Search blog...">
 </div>
 
 <div class="container">
 
-<!-- BLOG 1 -->
-<div class="blog">
-<img src="https://images.unsplash.com/photo-1552664730-d307ca884978">
-<div class="blog-content">
+  <div class="blog">
+    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop" alt="TMS">
+    <div class="blog-content">
+      <span class="tag">TMS</span>
+      <h3>Importance of Training Management System</h3>
+      <p class="meta">By Admin | 10 Aug 2026</p>
+      <p>TMS helps organizations manage training efficiently, track performance, and automate processes...</p>
+    </div>
+  </div>
 
-<span class="tag">TMS</span>
+  <div class="blog">
+    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&auto=format&fit=crop" alt="Technology">
+    <div class="blog-content">
+      <span class="tag">Technology</span>
+      <h3>Future of Digital Learning</h3>
+      <p class="meta">By Rahul | 15 Aug 2026</p>
+      <p>Online learning is growing rapidly with AI, virtual classrooms, and smart learning systems...</p>
+    </div>
+  </div>
 
-<h3>Importance of Training Management System</h3>
+  <div class="blog">
+    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&auto=format&fit=crop" alt="Career">
+    <div class="blog-content">
+      <span class="tag">Career</span>
+      <h3>Top 5 Skills in 2026</h3>
+      <p class="meta">By Sneha | 20 Aug 2026</p>
+      <p>AI, Cybersecurity, Data Science, Cloud Computing and Web Development are top trending skills...</p>
+    </div>
+  </div>
 
-<p class="meta">By Admin | 10 Aug 2026</p>
+  <div class="blog">
+    <img src="https://images.unsplash.com/photo-1506765515384-028b60a970df?w=800&auto=format&fit=crop" alt="AI">
+    <div class="blog-content">
+      <span class="tag">AI</span>
+      <h3>Role of AI in Modern Education</h3>
+      <p class="meta">By Neha | 25 Aug 2026</p>
+      <p>Artificial Intelligence is transforming education with smart tutors, automation, and personalized learning experiences...</p>
+    </div>
+  </div>
 
-<p>
-TMS helps organizations manage training efficiently, track performance,
-and automate processes...
-</p>
+  <div class="blog">
+    <img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=800&auto=format&fit=crop" alt="Productivity">
+    <div class="blog-content">
+      <span class="tag">Productivity</span>
+      <h3>How TMS Improves Productivity</h3>
+      <p class="meta">By Amit | 28 Aug 2026</p>
+      <p>Training Management Systems reduce manual work, automate tasks, and increase overall organizational productivity...</p>
+    </div>
+  </div>
 
-<button class="btn">Read More</button>
+  <div class="blog">
+    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&auto=format&fit=crop" alt="Cybersecurity">
+    <div class="blog-content">
+      <span class="tag">Cybersecurity</span>
+      <h3>Importance of Cyber Security Training</h3>
+      <p class="meta">By Kiran | 30 Aug 2026</p>
+      <p>Cybersecurity training helps employees protect data, avoid threats, and maintain secure systems in organizations...</p>
+    </div>
+  </div>
 
-</div>
-</div>
+  <div class="blog">
+    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&auto=format&fit=crop" alt="Development">
+    <div class="blog-content">
+      <span class="tag">Development</span>
+      <h3>Web Development Trends in 2026</h3>
+      <p class="meta">By Rahul | 2 Sep 2026</p>
+      <p>Modern web development includes AI tools, fast frameworks, and responsive design techniques...</p>
+    </div>
+  </div>
 
-<!-- BLOG 2 -->
-<div class="blog">
-<img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c">
-<div class="blog-content">
+  <div class="blog">
+    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop" alt="Cloud">
+    <div class="blog-content">
+      <span class="tag">Cloud</span>
+      <h3>Cloud Computing Explained</h3>
+      <p class="meta">By Sagar | 5 Sep 2026</p>
+      <p>Cloud computing helps businesses scale resources, reduce cost, and improve performance with remote servers...</p>
+    </div>
+  </div>
 
-<span class="tag">Technology</span>
-
-<h3>Future of Digital Learning</h3>
-
-<p class="meta">By Rahul | 15 Aug 2026</p>
-
-<p>
-Online learning is growing rapidly with AI, virtual classrooms,
-and smart learning systems...
-</p>
-
-<button class="btn">Read More</button>
-
-</div>
-</div>
-
-<!-- BLOG 3 -->
-<div class="blog">
-<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b">
-<div class="blog-content">
-
-<span class="tag">Career</span>
-
-<h3>Top 5 Skills in 2026</h3>
-
-<p class="meta">By Sneha | 20 Aug 2026</p>
-
-<p>
-AI, Cybersecurity, Data Science, Cloud Computing and Web Development
-are top trending skills...
-</p>
-
-<button class="btn">Read More</button>
-
-</div>
-</div>
-
-<!-- BLOG 4 -->
-<div class="blog">
-<img src="https://images.unsplash.com/photo-1506765515384-028b60a970df">
-<div class="blog-content">
-
-<span class="tag">AI</span>
-
-<h3>Role of AI in Modern Education</h3>
-
-<p class="meta">By Neha | 25 Aug 2026</p>
-
-<p>
-Artificial Intelligence is transforming education with smart tutors,
-automation, and personalized learning experiences...
-</p>
-
-<button class="btn">Read More</button>
-
-</div>
-</div>
-
-<!-- BLOG 5 -->
-<div class="blog">
-<img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7">
-<div class="blog-content">
-
-<span class="tag">Productivity</span>
-
-<h3>How TMS Improves Productivity</h3>
-
-<p class="meta">By Amit | 28 Aug 2026</p>
-
-<p>
-Training Management Systems reduce manual work, automate tasks,
-and increase overall organizational productivity...
-</p>
-
-<button class="btn">Read More</button>
-
-</div>
-</div>
-
-<!-- BLOG 6 -->
-<div class="blog">
-<img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df">
-<div class="blog-content">
-
-<span class="tag">Cybersecurity</span>
-
-<h3>Importance of Cyber Security Training</h3>
-
-<p class="meta">By Kiran | 30 Aug 2026</p>
-
-<p>
-Cybersecurity training helps employees protect data, avoid threats,
-and maintain secure systems in organizations...
-</p>
-
-<button class="btn">Read More</button>
-
-</div>
-</div>
-
-<!-- BLOG 7 -->
-<div class="blog">
-<img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6">
-<div class="blog-content">
-
-<span class="tag">Development</span>
-
-<h3>Web Development Trends in 2026</h3>
-
-<p class="meta">By Rahul | 2 Sep 2026</p>
-
-<p>
-Modern web development includes AI tools, fast frameworks,
-and responsive design techniques...
-</p>
-
-<button class="btn">Read More</button>
-
-</div>
-</div>
-
-<!-- BLOG 8 -->
-<div class="blog">
-<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3">
-<div class="blog-content">
-
-<span class="tag">Cloud</span>
-
-<h3>Cloud Computing Explained</h3>
-
-<p class="meta">By Sagar | 5 Sep 2026</p>
-
-<p>
-Cloud computing helps businesses scale resources, reduce cost,
-and improve performance with remote servers...
-</p>
-
-<button class="btn">Read More</button>
-
-</div>
-</div>
-
-<!-- BLOG 9 -->
-<div class="blog">
-<img src="https://images.unsplash.com/photo-1531497865144-0464ef8fb9c9">
-<div class="blog-content">
-
-<span class="tag">Career</span>
-
-<h3>Best IT Careers in 2026</h3>
-
-<p class="meta">By Admin | 10 Sep 2026</p>
-
-<p>
-Top careers include AI Engineer, Data Scientist, Cloud Architect,
-and Cybersecurity Analyst...
-</p>
-
-<button class="btn">Read More</button>
-
-</div>
-</div>
+  <div class="blog">
+    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop" alt="IT Careers">
+    <div class="blog-content">
+      <span class="tag">Career</span>
+      <h3>Best IT Careers in 2026</h3>
+      <p class="meta">By Admin | 10 Sep 2026</p>
+      <p>Top IT careers include AI Engineer, Data Scientist, Cloud Architect, Software Developer, and Cybersecurity Analyst...</p>
+    </div>
+  </div>
 
 </div>
 

@@ -1,78 +1,581 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TMS | Login</title>
 
-{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+header {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+header .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.logo-img {
+    height: 80px;
+    transition: 0.3s;
+}
+
+.logo-img:hover {
+    transform: scale(1.05) rotate(2deg);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 5px;
+    position: relative;
+    transition: 0.3s;
+}
+
+nav a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    transition: 0.3s;
+}
+
+nav a:hover::before {
+    width: 100%;
+}
+
+nav a:hover {
+    transform: translateY(-2px);
+    color: #ffd700;
+}
+
+nav li.current a {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* MAIN CONTAINER */
+.main-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+/* LOGIN FORM */
+.login-container {
+    background: white;
+    padding: 50px 40px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.6s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-container h1 {
+    color: #667eea;
+    margin-bottom: 10px;
+    font-size: 32px;
+    text-align: center;
+}
+
+.login-container p.subtitle {
+    color: #999;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+/* PASSWORD WRAPPER */
+.password-wrapper {
+    position: relative;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 14px 45px 14px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    transition: 0.3s;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+    background: #f8f9ff;
+}
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+    color: #ccc;
+}
+
+/* PASSWORD EYE ICON */
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 20px;
+    color: #667eea;
+    transition: 0.3s;
+    user-select: none;
+}
+
+.password-toggle:hover {
+    color: #764ba2;
+    transform: translateY(-50%) scale(1.15);
+}
+
+/* ERROR & SUCCESS MESSAGES */
+.message {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border-left: 4px solid;
+    display: none;
+    margin-bottom: 15px;
+    font-size: 14px;
+    animation: shake 0.3s ease;
+}
+
+.error {
+    background: #fee;
+    color: #c33;
+    border-left-color: #ff6b6b;
+}
+
+.success {
+    background: #efe;
+    color: #3c3;
+    border-left-color: #22c55e;
+}
+
+.message.show {
+    display: block;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* BUTTON */
+button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+button[type="submit"]:active {
+    transform: scale(0.98);
+}
+
+button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* LOADER */
+.loader {
+    display: none;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #667eea;
+}
+
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #e0e0e0;
+    border-top: 2px solid #667eea;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* DEMO CREDENTIALS */
+.demo-info {
+    background: #f0f4ff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    border-left: 4px solid #667eea;
+    font-size: 13px;
+    color: #667;
+}
+
+.demo-info strong {
+    color: #667eea;
+}
+
+/* REGISTER LINK */
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.register-link a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.register-link a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: white;
+    font-size: 14px;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+    header .header-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 0 15px;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    nav a {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
     .login-container {
-        width: 350px;
-        margin: 80px auto;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 0 15px rgba(0,0,0,0.2);
-        text-align: center;
-        background: white;
+        padding: 30px 20px;
+        max-width: 100%;
     }
 
-    .login-container h2 {
-        margin-bottom: 20px;
+    .login-container h1 {
+        font-size: 26px;
     }
 
-    .login-container input {
-        width: 90%;
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 5px;
-        border: 1px solid #ccc;
+    .main-container {
+        padding: 20px 15px;
     }
-
-    .login-container button {
-        width: 95%;
-        padding: 10px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .login-container button:hover {
-        background: #0056b3;
-    }
-
-    .error {
-        color: red;
-        margin-top: 10px;
-    }
-
-    .label {
-        display: block;
-        text-align: left;
-        margin-left: 5%;
-        font-size: 14px;
-        font-weight: 500;
-    }
+}
 </style>
 
-<div class="login-container">
-    <h2>Login</h2>
+</head>
 
-    <form method="POST">
-        {% csrf_token %}
+<body>
 
-        <label class="label">Username</label>
-        <input type="text" name="username" placeholder="Username" required>
+<!-- HEADER -->
+<header>
+    <div class="header-container">
+        <h1>
+            <img src="company logo.png" class="logo-img" alt="TMS Logo">
+        </h1>
 
-        <label class="label">Password</label>
-        <input type="password" name="password" placeholder="Password" required>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="features.html">Features</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li class="current"><a href="login.html">Login</a></li>
+                <li><a href="register.html">Register</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
 
-        <button type="submit">Login</button>
-    </form>
+<!-- MAIN -->
+<div class="main-container">
+    <div class="login-container">
+        <h1>🔐 Login</h1>
+        <p class="subtitle">Welcome back to TMS Platform</p>
 
-    <p class="error">{{ error }}</p>
+        <div class="message error" id="errorMsg"></div>
+        <div class="message success" id="successMsg"></div>
 
-    <p>Don't have an account?
-        <a href="{% url 'register' %}">Register</a>
-    </p>
+        <form onsubmit="loginUser(event)">
+
+            <!-- EMAIL -->
+            <div class="form-group">
+                <label for="email">📧 Email Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    placeholder="Enter your email" 
+                    required
+                    autocomplete="email">
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="form-group">
+                <label for="password">🔑 Password</label>
+                <div class="password-wrapper">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        placeholder="Enter your password" 
+                        required
+                        autocomplete="current-password">
+                    <span class="password-toggle" id="passwordToggle" onclick="togglePassword()">👁️</span>
+                </div>
+            </div>
+
+            <!-- SUBMIT BUTTON -->
+            <button type="submit" id="loginBtn">Login 🚀</button>
+
+            <!-- LOADER -->
+            <div class="loader" id="loader">
+                <span class="spinner"></span>Logging in...
+            </div>
+
+        </form>
+
+        <!-- DEMO CREDENTIALS -->
+        <div class="demo-info">
+            <strong>📌 Demo Credentials:</strong><br>
+            Email: <strong>admin@gmail.com</strong><br>
+            Password: <strong>1234</strong>
+        </div>
+
+        <!-- REGISTER LINK -->
+        <p class="register-link">
+            Don't have an account? <a href="register.html">Register Now</a>
+        </p>
+    </div>
 </div>
 
-{% endblock %}
+<!-- FOOTER -->
+<footer>
+    <p>TMS © 2026 | All Rights Reserved ❤️</p>
+</footer>
+
+<script>
+// ✅ TOGGLE PASSWORD VISIBILITY
+function togglePassword() {
+    const passwordInput = document.getElementById("password");
+    const passwordToggle = document.getElementById("passwordToggle");
+    
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        passwordToggle.textContent = "🙈";
+    } else {
+        passwordInput.type = "password";
+        passwordToggle.textContent = "👁️";
+    }
+}
+
+// ✅ LOGIN VALIDATION & FUNCTION
+function loginUser(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const errorMsg = document.getElementById("errorMsg");
+    const successMsg = document.getElementById("successMsg");
+    const loader = document.getElementById("loader");
+    const loginBtn = document.getElementById("loginBtn");
+
+    // HIDE MESSAGES
+    errorMsg.classList.remove("show");
+    successMsg.classList.remove("show");
+
+    // VALIDATION
+    if (!email || !password) {
+        showError(errorMsg, "❌ Please fill all fields");
+        return;
+    }
+
+    // EMAIL VALIDATION
+    if (!isValidEmail(email)) {
+        showError(errorMsg, "❌ Please enter a valid email address");
+        return;
+    }
+
+    // PASSWORD LENGTH
+    if (password.length < 4) {
+        showError(errorMsg, "❌ Password must be at least 4 characters");
+        return;
+    }
+
+    // SHOW LOADER
+    loader.style.display = "block";
+    loginBtn.disabled = true;
+
+    // 🔥 FAKE AUTH (frontend demo)
+    setTimeout(() => {
+        if (email === "admin@gmail.com" && password === "1234") {
+            // ✅ Save login state
+            localStorage.setItem("user", email);
+            localStorage.setItem("loginTime", new Date().getTime());
+
+            // ✅ SUCCESS MESSAGE
+            showSuccess(successMsg, "✅ Login successful! Redirecting...");
+            loader.style.display = "none";
+
+            // 🚀 Redirect to dashboard
+            setTimeout(() => {
+                window.location.href = "dashboard.html";
+            }, 1500);
+
+        } else {
+            loader.style.display = "none";
+            loginBtn.disabled = false;
+            showError(errorMsg, "❌ Invalid email or password");
+        }
+    }, 1500);
+}
+
+// ✅ EMAIL VALIDATION
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// ✅ SHOW ERROR
+function showError(element, message) {
+    element.textContent = message;
+    element.classList.add("show");
+    element.style.display = "block";
+}
+
+// ✅ SHOW SUCCESS
+function showSuccess(element, message) {
+    element.textContent = message;
+    element.classList.add("show");
+    element.style.display = "block";
+}
+
+// ✅ REAL-TIME EMAIL VALIDATION
+document.getElementById("email").addEventListener("input", function() {
+    const errorMsg = document.getElementById("errorMsg");
+    if (this.value && !isValidEmail(this.value)) {
+        showError(errorMsg, "⚠️ Please enter a valid email address");
+    } else {
+        errorMsg.classList.remove("show");
+    }
+});
+
+// ✅ REAL-TIME PASSWORD VALIDATION
+document.getElementById("password").addEventListener("input", function() {
+    const errorMsg = document.getElementById("errorMsg");
+    if (this.value && this.value.length < 4) {
+        showError(errorMsg, "⚠️ Password must be at least 4 characters");
+    } else {
+        errorMsg.classList.remove("show");
+    }
+});
+
+// ✅ ENTER KEY SUBMIT
+document.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        document.querySelector("form").dispatchEvent(new Event("submit"));
+    }
+});
+</script>
+
+</body>
+</html>
