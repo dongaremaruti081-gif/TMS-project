@@ -555,7 +555,7 @@ from django.views.decorators.http import require_POST
 @require_POST
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return redirect('login')    
 
 
 from django.shortcuts import render, redirect, get_object_or_404
