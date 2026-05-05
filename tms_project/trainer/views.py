@@ -172,8 +172,28 @@ from django.shortcuts import render
 from django.db.models import Avg, Max, Min
 from .models import Progress
 
-
 def progress_view(request):
+    from accounts.models import CustomUser
+    from smart.models import TrainingProgram
+    from .models import Progress
+    from django.db.models import Avg, Max, Min
+
+    trainees = CustomUser.objects.filter(role='Trainee')
+    trainings = TrainingProgram.objects.all()
+
+    for trainee in trainees:
+        for training in trainings:
+            Progress.objects.get_or_create(
+                trainee=trainee,
+                training=training,
+                defaults={
+                    "percentage": 75,
+                    "completed_assignments": 7,
+                    "total_assignments": 10,
+                    "quiz_score": 80,
+                    "attendance_percentage": 85
+                }
+            )
 
     progress = Progress.objects.select_related(
         "trainee", "training"
