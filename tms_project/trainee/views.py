@@ -369,14 +369,13 @@ from trainer.models import Material   # 🔥 import
 def materials(request):
     user = request.user
 
-    # user enrolled courses
     enrolled_courses = Enrollment.objects.filter(
         trainee=user
     ).values_list('training_id', flat=True)
 
     materials = Material.objects.filter(
-        training_id__in=enrolled_courses
-    )
+        training__id__in=enrolled_courses
+    ).exclude(file="").exclude(file__isnull=True)
 
     return render(request, "trainee/materials.html", {
         "materials": materials

@@ -102,7 +102,6 @@
 
 <!-- 🔥 GRID -->
 <div class="material-grid">
-
 {% for m in materials %}
     <div class="material-card">
 
@@ -121,12 +120,23 @@
         <div class="material-footer">
             <small>{{ m.uploaded_at|date:"d M Y" }}</small>
 
-            <a href="{{ m.file.url }}" download>
-                <button class="download-btn">Download</button>
-            </a>
+            {% if m.file %}
+                <a href="{{ m.file.url }}" download>
+                    <button class="download-btn">Download</button>
+                </a>
+            {% else %}
+                <span style="color:red;font-size:12px;">No file</span>
+            {% endif %}
         </div>
 
     </div>
+
+{% empty %}
+    <div class="empty">
+        <h4>No materials available</h4>
+        <p>Materials will appear here once uploaded</p>
+    </div>
+{% endfor %}
 
 {% empty %}
     <div class="empty">
