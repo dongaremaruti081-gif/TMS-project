@@ -171,40 +171,9 @@ def upload_material(request):
 from django.shortcuts import render
 from django.db.models import Avg, Max, Min
 from .models import Progress
+
+
 def progress_view(request):
-    from accounts.models import CustomUser
-    from smart.models import TrainingProgram, Enrollment
-    from .models import Progress, Material
-    from trainee.models import MaterialView
-    from django.db.models import Avg, Max, Min
-
-    trainees = CustomUser.objects.filter(role='Trainee')
-    trainings = TrainingProgram.objects.all()
-
-    for trainee in trainees:
-        for training in trainings:
-
-            total_materials = Material.objects.filter(training=training).count()
-
-            completed_materials = MaterialView.objects.filter(
-                user=trainee,
-                material__training=training,
-                viewed=True
-            ).count()
-
-            percentage = int((completed_materials / total_materials) * 100) if total_materials else 0
-
-            Progress.objects.update_or_create(
-                trainee=trainee,
-                training=training,
-                defaults={
-                    "percentage": percentage,
-                    "completed_assignments": completed_materials,
-                    "total_assignments": total_materials,
-                    "quiz_score": 0,
-                    "attendance_percentage": 0
-                }
-            )
 
     progress = Progress.objects.select_related(
         "trainee", "training"
@@ -217,14 +186,16 @@ def progress_view(request):
     highest = progress.aggregate(max=Max("percentage"))["max"] or 0
     lowest = progress.aggregate(min=Min("percentage"))["min"] or 0
 
-    return render(request, "trainer/progress.html", {
+    context = {
         "progress": progress,
         "avg_progress": round(avg_progress, 1),
         "top_performers": top_performers,
         "need_attention": need_attention,
         "highest": highest,
         "lowest": lowest,
-    })
+    }
+
+    return render(request, "trainer/progress.html", context)
 
 
 from trainee.models import Assignment
