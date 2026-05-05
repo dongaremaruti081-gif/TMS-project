@@ -105,9 +105,7 @@
 {% for m in materials %}
     <div class="material-card">
 
-        <div class="material-icon">
-            📄
-        </div>
+        <div class="material-icon">📄</div>
 
         <div class="material-title">
             {{ m.title }}
@@ -130,21 +128,9 @@
         </div>
 
     </div>
-
 {% empty %}
     <div class="empty">
         <h4>No materials available</h4>
         <p>Materials will appear here once uploaded</p>
     </div>
 {% endfor %}
-
-{% empty %}
-    <div class="empty">
-        <h4>No materials available</h4>
-        <p>Materials will appear here once uploaded</p>
-    </div>
-{% endfor %}
-
-</div>
-
-{% endblock %}
