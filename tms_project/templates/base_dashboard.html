@@ -281,20 +281,10 @@ body.dark-mode .header{
     </div>
 
     <!-- 🔔 NOTIFICATION ICON -->
-    <div style="display:flex; align-items:center; gap:20px;">
+   {% if request.user.role == "SuperAdmin" %}
 
-    <a href="
-    {% if request.user.role == 'Admin' %}
-        {% url 'admin_notification' %}
-    {% elif request.user.role == 'SuperAdmin' %}
-        {% url 'notifications' %}
-    {% elif request.user.role == 'Manager' %}
-        {% url 'noti' %}
-    {% else %}
-        {% url 'notifications' %}
-    {% endif %}
-    "
-style="position:relative; text-decoration:none; font-size:22px;">
+<a href="{% url 'notifications' %}"
+   style="position:relative; text-decoration:none; font-size:22px;">
 
     🔔
 
@@ -313,6 +303,9 @@ style="position:relative; text-decoration:none; font-size:22px;">
         {{ notification_count }}
     </span>
     {% endif %}
+</a>
+
+{% endif %}
 </a>
 
         <!-- PROFILE -->
