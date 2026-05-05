@@ -1,10 +1,9 @@
 {% extends 'base_dashboard.html' %}
 {% load static %}
 
-
+{% block content %}
 
 <style>
-/* 🔥 PAGE HEADER */
 .page-header{
     display:flex;
     justify-content:space-between;
@@ -16,14 +15,12 @@
     font-size:24px;
 }
 
-/* 🔥 GRID */
 .material-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
     gap:20px;
 }
 
-/* 🔥 CARD */
 .material-card{
     background:#fff;
     border-radius:16px;
@@ -38,7 +35,6 @@
     box-shadow:0 10px 20px rgba(0,0,0,0.05);
 }
 
-/* 🔥 ICON HEADER */
 .material-icon{
     width:50px;
     height:50px;
@@ -52,7 +48,6 @@
     margin-bottom:15px;
 }
 
-/* 🔥 TEXT */
 .material-title{
     font-size:16px;
     font-weight:600;
@@ -65,14 +60,12 @@
     margin-bottom:15px;
 }
 
-/* 🔥 FOOTER */
 .material-footer{
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
 
-/* 🔥 BUTTON */
 .download-btn{
     background:#6366f1;
     color:white;
@@ -87,7 +80,6 @@
     background:#4f46e5;
 }
 
-/* 🔥 EMPTY STATE */
 .empty{
     text-align:center;
     margin-top:40px;
@@ -95,13 +87,14 @@
 }
 </style>
 
-<!-- 🔥 HEADER -->
+<!-- HEADER -->
 <div class="page-header">
     <h2>📚 Study Materials</h2>
 </div>
 
-<!-- 🔥 GRID -->
+<!-- GRID -->
 <div class="material-grid">
+
 {% for m in materials %}
     <div class="material-card">
 
@@ -128,9 +121,14 @@
         </div>
 
     </div>
+
 {% empty %}
     <div class="empty">
         <h4>No materials available</h4>
         <p>Materials will appear here once uploaded</p>
     </div>
 {% endfor %}
+
+</div>
+
+{% endblock %}
