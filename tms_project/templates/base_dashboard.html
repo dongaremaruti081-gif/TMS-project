@@ -273,40 +273,38 @@ body.dark-mode .header{
 
 <!-- MAIN -->
 <div class="main">
-
 <!-- HEADER -->
 <div class="header">
     <div class="search-box">
         <input type="text" placeholder="Search...">
     </div>
 
-    <!-- 🔔 NOTIFICATION ICON -->
-   {% if request.user.role == "SuperAdmin" %}
+    <div style="display:flex; align-items:center; gap:20px;">
 
-<a href="{% url 'notifications' %}"
-   style="position:relative; text-decoration:none; font-size:22px;">
+        <!-- 🔔 NOTIFICATION (ONLY SUPERADMIN) -->
+        {% if request.user.role == "SuperAdmin" %}
+        <a href="{% url 'notifications' %}"
+           style="position:relative; text-decoration:none; font-size:22px;">
 
-    🔔
+            🔔
 
-    {% if notification_count > 0 %}
-    <span style="
-        position:absolute;
-        top:-8px;
-        right:-10px;
-        background:red;
-        color:white;
-        font-size:12px;
-        padding:3px 7px;
-        border-radius:50%;
-        font-weight:bold;
-    ">
-        {{ notification_count }}
-    </span>
-    {% endif %}
-</a>
-
-{% endif %}
-</a>
+            {% if notification_count > 0 %}
+            <span style="
+                position:absolute;
+                top:-8px;
+                right:-10px;
+                background:red;
+                color:white;
+                font-size:12px;
+                padding:3px 7px;
+                border-radius:50%;
+                font-weight:bold;
+            ">
+                {{ notification_count }}
+            </span>
+            {% endif %}
+        </a>
+        {% endif %}
 
         <!-- PROFILE -->
         <div class="profile" onclick="toggleDropdown()" id="profileMenu">
@@ -317,12 +315,11 @@ body.dark-mode .header{
                 <strong>{{ request.user.full_name }}</strong><br>
                 <small>{{ request.user.role }}</small>
             </div>
-
-
         </div>
 
     </div>
 </div>
+
 <!-- CONTENT -->
 <div class="content">
     {% block content %}
