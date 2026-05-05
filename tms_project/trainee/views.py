@@ -363,22 +363,18 @@ def view_assignment(request, id):
     })
 
 from trainer.models import Material   # 🔥 import
-
 @login_required
 def materials(request):
     user = request.user
 
-    # user enrolled courses
     enrolled_courses = Enrollment.objects.filter(
-        trainee=user
+        trainee_id=user.id
     ).values_list('training_id', flat=True)
 
     materials = Material.objects.filter(
-        training_id__in=enrolled_courses
+        training_id__in=list(enrolled_courses)
     )
 
     return render(request, "trainee/materials.html", {
         "materials": materials
     })
-
-
