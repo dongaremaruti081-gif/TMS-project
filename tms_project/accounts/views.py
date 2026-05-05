@@ -682,10 +682,17 @@ def add_employee(request):
         messages.success(request, "Employee Added Successfully ✅")
 
     return redirect('employee_management')"""
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.contrib.auth import get_user_model
+import re
 
-@csrf_exempt
+User = get_user_model()
+
 @login_required
 def add_employee(request):
+
     if request.method == "POST":
 
         full_name = request.POST.get('full_name', '').strip()
@@ -703,7 +710,7 @@ def add_employee(request):
             return redirect('employee_management')
 
         if not username or not re.match("^[A-Za-z]+$", username):
-            messages.error(request, "Invalid username (only letters allowed) ❌")
+            messages.error(request, "Invalid username ❌")
             return redirect('employee_management')
 
         if User.objects.filter(username=username).exists():
@@ -731,13 +738,14 @@ def add_employee(request):
         user = User.objects.create_user(
             username=username,
             password=password,
-            full_name=full_name,
-            email=email,
-            phone=phone,
-            department=department
+            email=email
         )
 
-        user.role = role   # 🔥 IMPORTANT FIX
+        # extra fields
+        user.full_name = full_name
+        user.phone = phone
+        user.department = department
+        user.role = role
         user.save()
 
         messages.success(request, f"{role} added successfully ✅")
