@@ -642,8 +642,7 @@ def assign_training(request):
 @csrf_exempt
 @login_required
 def employee_management(request):
-    employees = User.objects.filter(role='Trainee').order_by('-id')
-
+    employees = User.objects.filter(role__in=['Trainer', 'Trainee']).order_by('-id')
     return render(request, 'accounts/employee_management.html', {
         'employees': employees
     })
@@ -683,10 +682,15 @@ def add_employee(request):
         messages.success(request, "Employee Added Successfully ✅")
 
     return redirect('employee_management')"""
+from accounts.models import CustomUser
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+import re
 
-@csrf_exempt
-@login_required
+@login_required   # ❌ csrf_exempt काढलं
 def add_employee(request):
+
     if request.method == "POST":
 
         full_name = request.POST.get('full_name', '').strip()
@@ -704,14 +708,14 @@ def add_employee(request):
             return redirect('employee_management')
 
         if not username or not re.match("^[A-Za-z]+$", username):
-            messages.error(request, "Invalid username (only letters allowed) ❌")
+            messages.error(request, "Invalid username ❌")
             return redirect('employee_management')
 
-        if User.objects.filter(username=username).exists():
+        if CustomUser.objects.filter(username=username).exists():
             messages.error(request, "Username already exists ❌")
             return redirect('employee_management')
 
-        if email and User.objects.filter(email=email).exists():
+        if email and CustomUser.objects.filter(email=email).exists():
             messages.error(request, "Email already exists ❌")
             return redirect('employee_management')
 
@@ -729,16 +733,18 @@ def add_employee(request):
 
         # ================= CREATE USER =================
 
-        user = User.objects.create_user(
+        user = CustomUser.objects.create_user(
             username=username,
             password=password,
-            full_name=full_name,
-            email=email,
-            phone=phone,
-            department=department
+            email=email
         )
 
-        user.role = role   # 🔥 IMPORTANT FIX
+        # extra fields assign
+        user.full_name = full_name
+        user.phone = phone
+        user.department = department
+        user.role = role
+
         user.save()
 
         messages.success(request, f"{role} added successfully ✅")
